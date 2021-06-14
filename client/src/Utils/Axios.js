@@ -12,11 +12,16 @@ const postLogin = (userName, password) => {
 }
 
 const getQuizzes = () => {
-  return new Promise ((resolve) => {
-    Axios.get()
+  return new Promise((resolve) => {
+    Axios.post("http://localhost:3001/quizzes/getAll", {
+      isAuthorised: true
+    }).then(res => {
+      resolve(res)
+    })
   })
 }
 
 export {
-  postLogin
+  postLogin,
+  getQuizzes
 }
