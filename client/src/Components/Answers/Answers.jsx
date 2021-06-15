@@ -65,12 +65,29 @@ const Answers = (props) => {
   };
 
   const handleDeleteAnswer = (answerIndex) => {
-    
-    deleteAnswer(answers[answerIndex].Id).then(res => {
-      if(res.data.success){
-        callGetAllAnswers()
-      }
-    })
+    if (answers[answerIndex].Id) {
+      deleteAnswer(answers[answerIndex].Id).then((res) => {
+        if (res.data.success) {
+          callGetAllAnswers();
+        }
+      });
+    } else {
+      let newArr = [...answers];
+      newArr.splice(answerIndex, 1);
+      setAnswers(newArr);
+    }
+  };
+
+  const handleNewAnswer = () => {
+    let newArr = [...answers];
+    newArr.push({
+      Answer: "",
+      IsCorrect: 0,
+      Question: props.questionId,
+      IsDeleted: 0,
+    });
+
+    setAnswers(newArr);
   };
 
   return (
@@ -116,6 +133,11 @@ const Answers = (props) => {
           </div>
         );
       })}
+      {answers.length < 5 ? (
+        <Button variant="contained" color="primary" onClick={handleNewAnswer}>
+          Add Question
+        </Button>
+      ) : null}
       <Button variant="contained" color="primary" onClick={handleUpdate}>
         Update
       </Button>
