@@ -33,7 +33,6 @@ const postNewQuiz = (quizName) => {
 }
 
 const deleteQuiz = (quizId) => {
-  console.log(quizId);
   return new Promise(resolve => {
     Axios.post("http://localhost:3001/quizzes/deleteQuiz", {
       isAuthorised: true,
