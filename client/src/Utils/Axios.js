@@ -43,9 +43,59 @@ const deleteQuiz = (quizId) => {
   })
 }
 
+const getAllQuestionsForQuiz = (quizId) => {
+  return new Promise(resolve => {
+    Axios.post("http://localhost:3001/questions/getAll", {
+      isAuthorised: true,
+      quizId: quizId
+    }).then(res => {
+      resolve(res)
+    })
+  })
+}
+
+const getAllAnswersForQuestion = (questionId) => {
+  return new Promise(resolve => {
+    Axios.post("http://localhost:3001/answers/getAll", {
+      isAuthorised: true,
+      questionId: questionId
+    }).then(res => {
+      resolve(res)
+    })
+  })
+}
+
+const postAnswersForQuestion = (questionId, question, answers) => {
+  return new Promise(resolve => {
+    Axios.post("http://localhost:3001/answers/postAnswers", {
+      isAuthorised: true,
+      questionId: questionId,
+      question: question,
+      answers: answers,
+    }).then(res => {
+      resolve(res)
+    })
+  })
+}
+const deleteAnswer = (id) => {
+  return new Promise(resolve => {
+    Axios.post("http://localhost:3001/answers/deleteAnswer", {
+      isAuthorised: true,
+      id: id,
+    }).then(res => {
+      resolve(res)
+    })
+  })
+}
+
+
 export {
   postLogin,
   getQuizzes,
   postNewQuiz,
-  deleteQuiz
+  deleteQuiz,
+  getAllQuestionsForQuiz,
+  getAllAnswersForQuestion,
+  postAnswersForQuestion,
+  deleteAnswer
 }

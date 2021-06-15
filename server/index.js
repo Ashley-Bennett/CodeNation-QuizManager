@@ -146,6 +146,169 @@ app.post("/quizzes/deleteQuiz", (req, res) => {
   }
 })
 
+app.post("/questions/getAll", (req, res) => {
+  const isAuthorised = req.body.isAuthorised
+  if (isAuthorised) {
+    const sqlSelect = "select * from question where quiz = ?"
+    db.query(sqlSelect, [req.body.quizId], (err, result) => {
+      let success = false
+
+      if (err) {
+        res.send([err, success])
+      } else if (result) {
+        success = true
+        res.send({
+          data: result,
+          success: success
+        })
+      } else {
+        res.status(500).send(success)
+        console.log(err);
+        console.log(result);
+      }
+    })
+  } else {
+    return res.status(401).send("Unauthorised Access")
+  }
+})
+
+app.post("/answers/getAll", (req, res) => {
+  const isAuthorised = req.body.isAuthorised
+  if (isAuthorised) {
+    const sqlSelect = "select * from answers where question = ?"
+    db.query(sqlSelect, [req.body.questionId], (err, result) => {
+      let success = false
+      if (err) {
+        res.send([err, success])
+      } else if (result) {
+        success = true
+        res.send({
+          data: result,
+          success: success
+        })
+      } else {
+        res.status(500).send(success)
+        console.log(err);
+        console.log(result);
+      }
+    })
+  } else {
+    return res.status(401).send("Unauthorised Access")
+  }
+})
+
+app.post("/answers/deleteAnswer", (req, res) => {
+  const isAuthorised = req.body.isAuthorised
+
+  const sqlDelete = "delete from answers where id = ?"
+  db.query(sqlDelete, [req.body.id], (err, result) => {
+    let success = false
+    if (err) {
+      res.send([err, success])
+    } else if (result) {
+      success = true
+      res.send({
+        data: result,
+        success: success
+      })
+    } else {
+      res.status(500).send(success)
+      console.log(err);
+      console.log(result);
+    }
+  })
+})
+
+app.post("/answers/postAnswers", (req, res) => {
+  const isAuthorised = req.body.isAuthorised
+
+  const question = req.body.question
+  const answers = req.body.answers
+  const questionId = req.body.questionId
+  if (isAuthorised) {
+    if (question) {
+      const sqlPut = "update cn.question set question = ? where id = ?"
+      db.query(sqlPut, [question, questionId], (err, result) => {
+        let success = false
+        if (err) {
+          res.send([err, success])
+        } else if (result) {
+          success = true
+          res.send({
+            data: result,
+            success: success
+          })
+        } else {
+          res.status(500).send(success)
+          console.log(err);
+          console.log(result);
+        }
+      })
+    }
+    if (answers) {
+      //  Sort answers
+      let existingAnswers = []
+      let newAnswers = []
+      answers.map(answer => {
+        var keyNames = Object.keys(answer)
+        keyNames.includes("Id") ? existingAnswers.push(answer) : newAnswers.push(answer)
+      })
+
+      // update existing answers
+      existingAnswers.forEach(answer => {
+        console.log(answer);
+        switch (answer.IsDeleted) {
+          case 0:
+            const sqlPut = "update answers set answer = ?, iscorrect = ? where id = ?"
+            db.query(sqlPut, [answer.Answer, answer.IsCorrect, answer.Id], (err, result) => {
+              console.log(err);
+            })
+            break;
+
+          case 1:
+            const sqlDelete = "delete from answers where id = ?"
+            db.query(sqlDelete, [answer.Id], (err, result) => {
+              console.log(err);
+            })
+            break;
+
+          default:
+            break;
+        }
+      })
+
+      // Add new answers
+      newAnswers.forEach(answer => {
+        const sqlPost = "insert into answers (answer, iscorrect, question) values (?, ?, ?)"
+        db.query(sqlPost, [answer.Answer, answer.IsCorrect, questionId], (err, result) => {
+          console.log(err);
+        })
+      })
+    }
+
+    res.send("yes mate")
+    // const sqlSelect = "select * from answers where question = ?"
+    // db.query(sqlSelect, [req.body.questionId], (err, result) => {
+    //   let success = false
+    //   if (err) {
+    //     res.send([err, success])
+    //   } else if (result) {
+    //     success = true
+    //     res.send({
+    //       data: result,
+    //       success: success
+    //     })
+    //   } else {
+    //     res.status(500).send(success)
+    //     console.log(err);
+    //     console.log(result);
+    //   }
+    // })
+  } else {
+    return res.status(401).send("Unauthorised Access")
+  }
+})
+
 app.listen(3001, () => {
   console.log("Listening on port 3001");
 })

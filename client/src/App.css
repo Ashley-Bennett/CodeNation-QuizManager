@@ -1,13 +1,15 @@
-#root {
-  background-color: #E5E5E5;
-  height: 100%;
-
-}
-
-html, body {
+/* #root {
+  background-color: #e5e5e5;
   height: 100%;
 }
 
-.App{
+html {
+  height: 100%;
+}
+body {
+  height: 100%;
+} */
+
+.App {
   margin: 10px;
 }

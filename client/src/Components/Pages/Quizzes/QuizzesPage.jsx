@@ -6,6 +6,8 @@ import {
   Button,
 } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+
 import { deleteQuiz, getQuizzes, postNewQuiz } from "../../../Utils/Axios";
 import "./QuizzesPage.css";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
@@ -72,9 +74,17 @@ const QuizzesPage = () => {
                 >
                   Delete
                 </Button>
-                <Button variant="contained" color="primary">
-                  View
-                </Button>
+                <Link
+                  to={{
+                    pathname: "/questions",
+                    search: `?quizId=${quiz.Id}`,
+                    state: { quizId: "true" },
+                  }}
+                >
+                  <Button variant="contained" color="primary">
+                    View
+                  </Button>
+                </Link>
               </CardActions>
             </Card>
           );
