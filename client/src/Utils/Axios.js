@@ -21,7 +21,32 @@ const getQuizzes = () => {
   })
 }
 
+const postNewQuiz = (quizName) => {
+  return new Promise(resolve => {
+    Axios.post("http://localhost:3001/quizzes/postNewQuiz", {
+      isAuthorised: true,
+      quizName: quizName
+    }).then(res => {
+      resolve(res)
+    })
+  })
+}
+
+const deleteQuiz = (quizId) => {
+  console.log(quizId);
+  return new Promise(resolve => {
+    Axios.post("http://localhost:3001/quizzes/deleteQuiz", {
+      isAuthorised: true,
+      quizId: quizId
+    }).then(res => {
+      resolve(res)
+    })
+  })
+}
+
 export {
   postLogin,
-  getQuizzes
+  getQuizzes,
+  postNewQuiz,
+  deleteQuiz
 }

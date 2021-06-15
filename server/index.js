@@ -10,7 +10,7 @@ const db = mysql.createPool({
   user: "root",
   //  Password stored locally
   password: password,
-  database: "cntest"
+  database: "cn"
 })
 
 
@@ -45,11 +45,15 @@ app.post("/auth/login", (req, res) => {
     } else if (!password) {
       res.send(["Please enter a password", success])
     } else if (result) {
+      //  Need to rewrite this later
       result.forEach(account => {
-        if (account.userName === userName && account.password === password) {
+        if (account.UserName === userName && account.Password === password) {
           success = true
           user = account
-          res.send({data: user, success: success})
+          res.send({
+            data: user,
+            success: success
+          })
         } else {
           res.send(["No user found with those credentials", success])
         }
@@ -74,7 +78,64 @@ app.post("/quizzes/getAll", (req, res) => {
         res.send([err, success])
       } else if (result) {
         success = true
-        res.send([result, success])
+        res.send({
+          data: result,
+          success: success
+        })
+      } else {
+        res.status(500).send(success)
+        console.log(err);
+        console.log(result);
+      }
+    })
+  } else {
+    return res.status(401).send("Unauthorised Access")
+  }
+})
+
+//  Post New Quiz
+app.post("/quizzes/postNewQuiz", (req, res) => {
+  const isAuthorised = req.body.isAuthorised
+  if (isAuthorised) {
+    const sqlInsert = "insert into quizzes (name) values (?)"
+    db.query(sqlInsert, req.body.quizName, (err, result) => {
+      let success = false
+
+      if (err) {
+        res.send([err, success])
+      } else if (result) {
+        success = true
+        res.send({
+          data: result,
+          success: success
+        })
+      } else {
+        res.status(500).send(success)
+        console.log(err);
+        console.log(result);
+      }
+    })
+  } else {
+    return res.status(401).send("Unauthorised Access")
+  }
+})
+
+app.post("/quizzes/deleteQuiz", (req, res) => {
+  const isAuthorised = req.body.isAuthorised
+  if (isAuthorised) {
+    const sqlDelete = "delete from quizzes where id = ?"
+    console.log([req.body.quizId]);
+    db.query(sqlDelete, [req.body.quizId], (err, result) => {
+      let success = false
+
+      if (err) {
+        res.send([err, success])
+      } else if (result) {
+        success = true
+        res.send({
+          data: result,
+          success: success
+        })
       } else {
         res.status(500).send(success)
         console.log(err);
