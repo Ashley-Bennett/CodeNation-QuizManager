@@ -10,7 +10,8 @@ const db = mysql.createPool({
   user: "root",
   //  Password stored locally
   password: password,
-  database: "cn"
+  database: "cn",
+  multipleStatements:true
 })
 
 
@@ -219,6 +220,30 @@ app.post("/answers/deleteAnswer", (req, res) => {
   })
 })
 
+
+//  Delete Question
+app.post("/questions/deleteQuestion", (req, res) => {
+  const isAuthorised = req.body.isAuthorised
+
+  const sqlDelete = "delete from answers where question = ?; delete from question where id = ?"
+  db.query(sqlDelete, [req.body.questionId, req.body.questionId], (err, result) => {
+    let success = false
+    if (err) {
+      res.send([err, success])
+    } else if (result) {
+      success = true
+      res.send({
+        data: result,
+        success: success
+      })
+    } else {
+      res.status(500).send(success)
+      console.log(err);
+      console.log(result);
+    }
+  })
+})
+
 app.post("/answers/postAnswers", (req, res) => {
   const isAuthorised = req.body.isAuthorised
 
@@ -256,25 +281,11 @@ app.post("/answers/postAnswers", (req, res) => {
 
       // update existing answers
       existingAnswers.forEach(answer => {
-        console.log(answer);
-        switch (answer.IsDeleted) {
-          case 0:
-            const sqlPut = "update answers set answer = ?, iscorrect = ? where id = ?"
-            db.query(sqlPut, [answer.Answer, answer.IsCorrect, answer.Id], (err, result) => {
-              console.log(err);
-            })
-            break;
 
-          case 1:
-            const sqlDelete = "delete from answers where id = ?"
-            db.query(sqlDelete, [answer.Id], (err, result) => {
-              console.log(err);
-            })
-            break;
-
-          default:
-            break;
-        }
+        const sqlPut = "update answers set answer = ?, iscorrect = ? where id = ?"
+        db.query(sqlPut, [answer.Answer, answer.IsCorrect, answer.Id], (err, result) => {
+          console.log(err);
+        })
       })
 
       // Add new answers

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
   deleteAnswer,
+  deleteQuestion,
   getAllAnswersForQuestion,
   postAnswersForQuestion,
 } from "../../Utils/Axios";
@@ -90,6 +91,14 @@ const Answers = (props) => {
     setAnswers(newArr);
   };
 
+  const handleDeleteQuestion = () => {
+    deleteQuestion(props.questionId).then(res => {
+      if(res.data.success){
+
+      }
+    })
+  }
+
   return (
     <div>
       <label htmlFor="question">Question:</label>
@@ -135,12 +144,16 @@ const Answers = (props) => {
       })}
       {answers.length < 5 ? (
         <Button variant="contained" color="primary" onClick={handleNewAnswer}>
-          Add Question
+          Add Answer
         </Button>
       ) : null}
       <Button variant="contained" color="primary" onClick={handleUpdate}>
         Update
       </Button>
+      <Button variant="contained" color="primary" onClick={handleDeleteQuestion}>
+        Delete Question
+      </Button>
+      
     </div>
   );
 };
