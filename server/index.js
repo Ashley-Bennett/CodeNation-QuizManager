@@ -124,7 +124,6 @@ app.post("/quizzes/deleteQuiz", (req, res) => {
   const isAuthorised = req.body.isAuthorised
   if (isAuthorised) {
     const sqlDelete = "delete from quizzes where id = ?"
-    console.log([req.body.quizId]);
     db.query(sqlDelete, [req.body.quizId], (err, result) => {
       let success = false
 

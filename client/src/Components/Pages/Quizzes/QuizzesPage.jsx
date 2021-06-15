@@ -29,7 +29,6 @@ const QuizzesPage = () => {
   };
 
   const handlePostNewQuiz = () => {
-    console.log("post quiz", newQuizName);
     postNewQuiz(newQuizName).then((res) => {
       if (res.data.success) {
         setNewQuizName("");
@@ -46,13 +45,11 @@ const QuizzesPage = () => {
   };
 
   const handleDeleteQuiz = (quizId) => {
-    console.log(quizId);
     deleteQuiz(quizId).then((res) => {
       if (res.data.success) {
         callGetQuizzes();
       }
     });
-    console.log("delete");
   };
 
   return (

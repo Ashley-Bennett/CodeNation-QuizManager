@@ -20,9 +20,7 @@ const LoginPage = () => {
 
   const handleSubmit = () => {
     postLogin(userName, password).then(res => {
-      console.log(res);
       if (res.data.success) {
-        console.log("here");
         setLoggedIn(true)
         sessionStorage.setItem("isLoggedIn", "true")
       }
