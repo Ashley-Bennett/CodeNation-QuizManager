@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Redirect } from "react-router-dom";
 import { getAllQuestionsForQuiz, postNewQuestion } from "../../../Utils/Axios";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
@@ -68,6 +69,8 @@ const QuestionsPage = (props) => {
           </AccordionSummary>
         </Accordion>
       )}
+      {!props.loggedIn && <Redirect to="/" />}
+
     </div>
   );
 };

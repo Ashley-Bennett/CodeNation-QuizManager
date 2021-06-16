@@ -130,6 +130,7 @@ const App = () => {
             <QuestionsPage
               authLevel={authLevel}
               handleSetPath={handleSetPath}
+              loggedIn={loggedIn}
             />
           </Route>
         </Switch>
