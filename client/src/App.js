@@ -14,6 +14,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import { getPermissionsForPermissionId } from "./Utils/Axios";
+import { Button } from "@material-ui/core";
 
 const App = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -67,10 +68,18 @@ const App = () => {
       {authLevel > 0 && (
         <AppBar position="static">
           <Toolbar style={{ display: "flex", justifyContent: "space-between" }}>
-            <div />
+            {path === "Questions" ? (
+              <Link  color="#ffffff" to="/quizzes/">
+                <Button variant="contained" color="secondary">Back</Button>
+              </Link>
+            ) : (
+              <div />
+            )}
             {path === "Questions" ? (
               <Breadcrumbs aria-label="breadcrumb">
-                <Link color="#ffffff" to="/quizzes/">Quizzes</Link>
+                <Link color="#ffffff" to="/quizzes/">
+                  Quizzes
+                </Link>
                 <Typography color="#ffffff">Questions</Typography>
               </Breadcrumbs>
             ) : (

@@ -3,6 +3,7 @@ import mysql from "mysql"
 import password from "./DBPassword.js";
 import bodyParser from "body-parser";
 import cors from "cors"
+import bcrypt from "bcryptjs"
 const app = express()
 
 const db = mysql.createPool({
@@ -39,7 +40,8 @@ app.post("/auth/login", (req, res) => {
     } else if (result) {
       for (let i = 0; i < result.length; i++) {
         const account = result[i];
-        if (account.UserName === userName && account.Password === password) {
+        if (account.UserName === userName && bcrypt.compareSync(password, account.Password)) {
+          
           success = true
           user = account
           break
@@ -345,6 +347,27 @@ app.post("/questions/postNewQuestion", (req, res) => {
           console.log(err);
           console.log(result);
         }
+      })
+    } else {
+      res.status(500).send(success)
+      console.log(err);
+      console.log(result);
+    }
+  })
+})
+
+//  Create a user
+app.post("/auth/createUser", (req, res) => {
+  const sqlSelect = "insert into cn.users (username, password, permissions) values (?, ?, ?)"
+  db.query(sqlSelect, [req.body.userName, bcrypt.hashSync(req.body.password, bcrypt.genSaltSync()), req.body.permissionsId], (err, result) => {
+    let success = false
+    if (err) {
+      res.send([err, success])
+    } else if (result) {
+      success = true
+      res.send({
+        data: result,
+        success: success
       })
     } else {
       res.status(500).send(success)
