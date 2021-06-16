@@ -26,7 +26,7 @@ const App = () => {
       setLoggedIn(true);
     }
     if (sessionStorage.getItem("authLevel")) {
-      setAuthLevel(sessionStorage.getItem("authLevel"));
+      setAuthLevel(parseInt(sessionStorage.getItem("authLevel")));
     }
   }, []);
 
@@ -47,7 +47,7 @@ const App = () => {
 
   const handleLogIn = (data) => {
     sessionStorage.setItem("isLoggedIn", "true");
-    setLoggedIn(true)
+    setLoggedIn(true);
     //  Switch on user roles to set permissions
     getPermissionsForPermissionId(data.Permissions).then((res) => {
       if (res.data.success) {
@@ -111,10 +111,17 @@ const App = () => {
             <LoginPage loggedIn={loggedIn} handleLogIn={handleLogIn} />
           </Route>
           <Route path="/quizzes">
-            <QuizzesPage handleSetPath={handleSetPath} loggedIn={loggedIn}/>
+            <QuizzesPage
+              authLevel={authLevel}
+              handleSetPath={handleSetPath}
+              loggedIn={loggedIn}
+            />
           </Route>
           <Route path="/questions">
-            <QuestionsPage handleSetPath={handleSetPath} />
+            <QuestionsPage
+              authLevel={authLevel}
+              handleSetPath={handleSetPath}
+            />
           </Route>
         </Switch>
       </div>

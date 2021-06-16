@@ -19,7 +19,7 @@ const QuizzesPage = (props) => {
 
   useEffect(() => {
     callGetQuizzes();
-    props.handleSetPath("Quizzes")
+    props.handleSetPath("Quizzes");
   }, []);
 
   const handleAddCardClick = (status) => {
@@ -65,15 +65,17 @@ const QuizzesPage = (props) => {
                 <Typography>{quiz.Name}</Typography>
               </CardContent>
               <CardActions>
-                <Button
-                  style={{ backgroundColor: "#e57373", color: "#ffffff" }}
-                  variant="contained"
-                  onClick={() => {
-                    handleDeleteQuiz(quiz.Id);
-                  }}
-                >
-                  Delete
-                </Button>
+                {props.authLevel > 2 && (
+                  <Button
+                    style={{ backgroundColor: "#e57373", color: "#ffffff" }}
+                    variant="contained"
+                    onClick={() => {
+                      handleDeleteQuiz(quiz.Id);
+                    }}
+                  >
+                    Delete
+                  </Button>
+                )}
                 <Link
                   to={{
                     pathname: "/questions",
@@ -131,7 +133,7 @@ const QuizzesPage = (props) => {
           <AddCircleOutlineIcon style={{ color: "#ffffff" }} />
         </Card>
       </div>
-      {!props.loggedIn && <Redirect to="/"/>}
+      {!props.loggedIn && <Redirect to="/" />}
     </div>
   );
 };

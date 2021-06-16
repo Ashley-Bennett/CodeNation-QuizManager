@@ -37,19 +37,24 @@ app.post("/auth/login", (req, res) => {
     } else if (!password) {
       res.send(["Please enter a password", success])
     } else if (result) {
-      //  Need to rewrite this later
-      result.forEach(account => {
+      for (let i = 0; i < result.length; i++) {
+        const account = result[i];
         if (account.UserName === userName && account.Password === password) {
           success = true
           user = account
-          res.send({
-            data: user,
-            success: success
-          })
-        } else {
-          res.send(["No user found with those credentials", success])
+          break
         }
-      });
+      }
+
+      if (success) {
+        res.send({
+          data: user,
+          success: success
+        })
+      } else {
+        res.send(["No user found with those credentials", success])
+      }
+
     } else {
       res.status(500).send(success)
       console.log(err);
@@ -59,26 +64,26 @@ app.post("/auth/login", (req, res) => {
 })
 
 // Get Permissions
-app.post("/auth/permissions", (req, res) => {
-  const sqlSelect = "select * from permissions where id = ?"
+// app.post("/auth/permissions", (req, res) => {
+//   const sqlSelect = "select * from permissions where id = ?"
 
-  db.query(sqlSelect, [req.body.permissionId], (err, result) => {
-    let success = false
-    if (err) {
-      res.send([err, success])
-    } else if (result) {
-      success = true
-      res.send({
-        data: result,
-        success: success
-      })
-    } else {
-      res.status(500).send(success)
-      console.log(err);
-      console.log(result);
-    }
-  })
-})
+//   db.query(sqlSelect, [req.body.permissionId], (err, result) => {
+//     let success = false
+//     if (err) {
+//       res.send([err, success])
+//     } else if (result) {
+//       success = true
+//       res.send({
+//         data: result,
+//         success: success
+//       })
+//     } else {
+//       res.status(500).send(success)
+//       console.log(err);
+//       console.log(result);
+//     }
+//   })
+// })
 
 //  Get All Quizzes
 app.post("/quizzes/getAll", (req, res) => {
