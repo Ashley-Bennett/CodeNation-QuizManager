@@ -29,7 +29,7 @@ const QuestionsPage = () => {
   };
 
   const handleAddNewQuestion = () => {
-    postNewQuestion().then((res) => {
+    postNewQuestion(quizId).then((res) => {
       if (res.data.success) {
         callGetAllQuestionsForQuiz();
       }

@@ -319,8 +319,8 @@ app.post("/answers/postAnswers", (req, res) => {
 app.post("/questions/postNewQuestion", (req, res) => {
   const isAuthorised = req.body.isAuthorised
 
-  const sqlInsert = "insert into question (question, quiz) values ('New Question', 1); SELECT LAST_INSERT_ID();"
-  db.query(sqlInsert, (err, result) => {
+  const sqlInsert = "insert into question (question, quiz) values ('New Question', ?); SELECT LAST_INSERT_ID();"
+  db.query(sqlInsert,[req.body.quizId], (err, result) => {
     let success = false
     if (err) {
       res.send([err, success])
