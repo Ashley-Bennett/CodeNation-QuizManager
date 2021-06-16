@@ -46,12 +46,12 @@ const App = () => {
   };
 
   const handleLogIn = (data) => {
-    sessionStorage.setItem("isLoggedIn", "true");
-    setLoggedIn(true);
     //  Switch on user roles to set permissions
     getPermissionsForPermissionId(data.Permissions).then((res) => {
       if (res.data.success) {
         setAuthLevel(res.data.data[0].Level);
+        setLoggedIn(true);
+        sessionStorage.setItem("isLoggedIn", "true");
         sessionStorage.setItem("authLevel", res.data.data[0].Level);
       }
     });

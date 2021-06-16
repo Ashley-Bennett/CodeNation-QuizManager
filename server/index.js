@@ -64,26 +64,26 @@ app.post("/auth/login", (req, res) => {
 })
 
 // Get Permissions
-// app.post("/auth/permissions", (req, res) => {
-//   const sqlSelect = "select * from permissions where id = ?"
+app.post("/auth/permissions", (req, res) => {
+  const sqlSelect = "select * from permissions where id = ?"
 
-//   db.query(sqlSelect, [req.body.permissionId], (err, result) => {
-//     let success = false
-//     if (err) {
-//       res.send([err, success])
-//     } else if (result) {
-//       success = true
-//       res.send({
-//         data: result,
-//         success: success
-//       })
-//     } else {
-//       res.status(500).send(success)
-//       console.log(err);
-//       console.log(result);
-//     }
-//   })
-// })
+  db.query(sqlSelect, [req.body.permissionId], (err, result) => {
+    let success = false
+    if (err) {
+      res.send([err, success])
+    } else if (result) {
+      success = true
+      res.send({
+        data: result,
+        success: success
+      })
+    } else {
+      res.status(500).send(success)
+      console.log(err);
+      console.log(result);
+    }
+  })
+})
 
 //  Get All Quizzes
 app.post("/quizzes/getAll", (req, res) => {

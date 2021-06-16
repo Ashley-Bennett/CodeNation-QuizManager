@@ -18,8 +18,7 @@ const QuestionsPage = (props) => {
     const urlParams = new URLSearchParams(searchQuery);
     setQuizId(urlParams.get("quizId"));
     callGetAllQuestionsForQuiz(urlParams.get("quizId"));
-    props.handleSetPath("Questions")
-
+    props.handleSetPath("Questions");
   }, []);
 
   const callGetAllQuestionsForQuiz = (initQuizId) => {
@@ -42,7 +41,7 @@ const QuestionsPage = (props) => {
     <div className="questionsPageContainer">
       {questions.map((question) => {
         return (
-          <Accordion>
+          <Accordion disabled={props.authLevel > 1 ? false : true}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               {question.Question}
             </AccordionSummary>
@@ -56,15 +55,17 @@ const QuestionsPage = (props) => {
           </Accordion>
         );
       })}
-      <Accordion>
-        <AccordionSummary
-          className="questionsPage_addQuestionBox"
-          expandIcon={<AddCircleOutlineIcon style={{ color: "#ffffff" }} />}
-          onClick={handleAddNewQuestion}
-        >
-          Add a question
-        </AccordionSummary>
-      </Accordion>
+      {props.authLevel > 2 && (
+        <Accordion>
+          <AccordionSummary
+            className="questionsPage_addQuestionBox"
+            expandIcon={<AddCircleOutlineIcon style={{ color: "#ffffff" }} />}
+            onClick={handleAddNewQuestion}
+          >
+            Add a question
+          </AccordionSummary>
+        </Accordion>
+      )}
     </div>
   );
 };

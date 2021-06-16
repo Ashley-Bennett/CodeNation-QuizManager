@@ -123,15 +123,17 @@ const QuizzesPage = (props) => {
             </CardActions>
           </Card>
         ) : null}
-        <Card
-          className="quizzesPage_addCard"
-          style={{ backgroundColor: "#4caf50" }}
-          onClick={() => {
-            handleAddCardClick(true);
-          }}
-        >
-          <AddCircleOutlineIcon style={{ color: "#ffffff" }} />
-        </Card>
+        {props.authLevel > 2 && (
+          <Card
+            className="quizzesPage_addCard"
+            style={{ backgroundColor: "#4caf50" }}
+            onClick={() => {
+              handleAddCardClick(true);
+            }}
+          >
+            <AddCircleOutlineIcon style={{ color: "#ffffff" }} />
+          </Card>
+        )}
       </div>
       {!props.loggedIn && <Redirect to="/" />}
     </div>
