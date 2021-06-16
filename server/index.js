@@ -11,7 +11,7 @@ const db = mysql.createPool({
   //  Password stored locally
   password: password,
   database: "cn",
-  multipleStatements:true
+  multipleStatements: true
 })
 
 
@@ -244,6 +244,7 @@ app.post("/questions/deleteQuestion", (req, res) => {
   })
 })
 
+//  Post Answers
 app.post("/answers/postAnswers", (req, res) => {
   const isAuthorised = req.body.isAuthorised
 
@@ -292,34 +293,64 @@ app.post("/answers/postAnswers", (req, res) => {
       newAnswers.forEach(answer => {
         const sqlPost = "insert into answers (answer, iscorrect, question) values (?, ?, ?)"
         db.query(sqlPost, [answer.Answer, answer.IsCorrect, questionId], (err, result) => {
-          console.log(err);
+          let success = false
+          if (err) {
+            res.send([err, success])
+          } else if (result) {
+            success = true
+            res.send({
+              data: result,
+              success: success
+            })
+          } else {
+            res.status(500).send(success)
+            console.log(err);
+            console.log(result);
+          }
         })
       })
     }
-
-    res.send("yes mate")
-    // const sqlSelect = "select * from answers where question = ?"
-    // db.query(sqlSelect, [req.body.questionId], (err, result) => {
-    //   let success = false
-    //   if (err) {
-    //     res.send([err, success])
-    //   } else if (result) {
-    //     success = true
-    //     res.send({
-    //       data: result,
-    //       success: success
-    //     })
-    //   } else {
-    //     res.status(500).send(success)
-    //     console.log(err);
-    //     console.log(result);
-    //   }
-    // })
   } else {
     return res.status(401).send("Unauthorised Access")
   }
 })
 
+//  Post new question
+app.post("/questions/postNewQuestion", (req, res) => {
+  const isAuthorised = req.body.isAuthorised
+
+  const sqlInsert = "insert into question (question, quiz) values ('New Question', 1); SELECT LAST_INSERT_ID();"
+  db.query(sqlInsert, (err, result) => {
+    let success = false
+    if (err) {
+      res.send([err, success])
+    } else if (result) {
+      const questionId = Object.values(result[1][0])[0]
+      //  Insert default answers
+      const sqlInsertAnswers = "insert into answers (answer, iscorrect, question) values ('Answer', true, ?);insert into answers (answer, iscorrect, question) values ('Answer', false, ?);insert into answers (answer, iscorrect, question) values ('Answer', false, ?);"
+      db.query(sqlInsertAnswers,[questionId,questionId,questionId], (err, result) => {
+        if (err) {
+          res.send([err, success])
+        } else if (result) {
+          success = true
+          res.send({
+            data: result,
+            success: success
+          })
+        } else {
+          res.status(500).send(success)
+          console.log(err);
+          console.log(result);
+        }
+      })
+    } else {
+      res.status(500).send(success)
+      console.log(err);
+      console.log(result);
+    }
+  })
+})
+
 app.listen(3001, () => {
   console.log("Listening on port 3001");
-})
+})[0]

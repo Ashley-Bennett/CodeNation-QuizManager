@@ -62,7 +62,12 @@ const Answers = (props) => {
       props.questionId,
       question === props.question ? null : question,
       answers
-    );
+    ).then(res => {
+      if(res.data.success) {
+        callGetAllAnswers()
+        props.callGetAllQuestionsForQuiz()
+      }
+    });
   };
 
   const handleDeleteAnswer = (answerIndex) => {
@@ -94,7 +99,7 @@ const Answers = (props) => {
   const handleDeleteQuestion = () => {
     deleteQuestion(props.questionId).then(res => {
       if(res.data.success){
-
+        props.callGetAllQuestionsForQuiz()
       }
     })
   }

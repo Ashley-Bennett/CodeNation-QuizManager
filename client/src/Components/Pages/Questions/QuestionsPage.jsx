@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getAllQuestionsForQuiz } from "../../../Utils/Axios";
+import { getAllQuestionsForQuiz, postNewQuestion } from "../../../Utils/Axios";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
@@ -28,6 +28,14 @@ const QuestionsPage = () => {
     });
   };
 
+  const handleAddNewQuestion = () => {
+    postNewQuestion().then((res) => {
+      if (res.data.success) {
+        callGetAllQuestionsForQuiz();
+      }
+    });
+  };
+
   return (
     <div className="questionsPageContainer">
       <h1>Questions</h1>
@@ -38,7 +46,11 @@ const QuestionsPage = () => {
               {question.Question}
             </AccordionSummary>
             <AccordionDetails>
-              <Answers questionId={question.Id} question={question.Question} />
+              <Answers
+                questionId={question.Id}
+                question={question.Question}
+                callGetAllQuestionsForQuiz={callGetAllQuestionsForQuiz}
+              />
             </AccordionDetails>
           </Accordion>
         );
@@ -47,10 +59,10 @@ const QuestionsPage = () => {
         <AccordionSummary
           className="questionsPage_addQuestionBox"
           expandIcon={<AddCircleOutlineIcon style={{ color: "#ffffff" }} />}
+          onClick={handleAddNewQuestion}
         >
           Add a question
         </AccordionSummary>
-        <AccordionDetails>test</AccordionDetails>
       </Accordion>
     </div>
   );

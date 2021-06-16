@@ -99,6 +99,17 @@ const deleteQuestion = questionId => {
   })
 }
 
+const postNewQuestion = quizId => {
+  return new Promise(resolve => {
+    Axios.post("http://localhost:3001/questions/postNewQuestion", {
+      isAuthorised: true,
+      quizId
+    }).then(res => {
+      resolve(res)
+    })
+  })
+}
+
 
 export {
   postLogin,
@@ -109,5 +120,6 @@ export {
   getAllAnswersForQuestion,
   postAnswersForQuestion,
   deleteAnswer,
-  deleteQuestion
+  deleteQuestion,
+  postNewQuestion
 }
