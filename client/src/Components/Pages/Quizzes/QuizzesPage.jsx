@@ -123,6 +123,7 @@ const QuizzesPage = (props) => {
             </CardActions>
           </Card>
         ) : null}
+        {props.authLevel < 3 && quizzes.length === 0 && <h1>No Quizzes Yet</h1>}
         {props.authLevel > 2 && (
           <Card
             className="quizzesPage_addCard"

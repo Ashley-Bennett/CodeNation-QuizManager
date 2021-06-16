@@ -62,10 +62,10 @@ const Answers = (props) => {
       props.questionId,
       question === props.question ? null : question,
       answers
-    ).then(res => {
-      if(res.data.success) {
-        callGetAllAnswers()
-        props.callGetAllQuestionsForQuiz()
+    ).then((res) => {
+      if (res.data.success) {
+        callGetAllAnswers();
+        props.callGetAllQuestionsForQuiz();
       }
     });
   };
@@ -97,68 +97,86 @@ const Answers = (props) => {
   };
 
   const handleDeleteQuestion = () => {
-    deleteQuestion(props.questionId).then(res => {
-      if(res.data.success){
-        props.callGetAllQuestionsForQuiz()
+    deleteQuestion(props.questionId).then((res) => {
+      if (res.data.success) {
+        props.callGetAllQuestionsForQuiz();
       }
-    })
-  }
+    });
+  };
 
   return (
     <div>
-      <label htmlFor="question">Question:</label>
-      <input
-        type="text"
-        value={question}
-        onChange={(e) => handleQuestionChange(e)}
-      />
-      {answers.map((answer, index) => {
-        return (
-          <div>
-            <label htmlFor="answer">Answer</label>
-            <input
-              type="text"
-              value={answer.Answer}
-              onChange={(e) => {
-                handleChangeAnswer(e, index);
-              }}
-            />
-            <input
-              type="checkbox"
-              name=""
-              id=""
-              checked={answer.IsCorrect}
-              value={answer.IsCorrect}
-              onChange={(e) => {
-                handleChangeAnswerCorrect(e, index);
-              }}
-            />
-            {answers.length > 3 ? (
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => {
-                  handleDeleteAnswer(index);
-                }}
-              >
-                Delete
-              </Button>
-            ) : null}
-          </div>
-        );
-      })}
-      {answers.length < 5 ? (
-        <Button variant="contained" color="primary" onClick={handleNewAnswer}>
-          Add Answer
-        </Button>
-      ) : null}
-      <Button variant="contained" color="primary" onClick={handleUpdate}>
-        Update
-      </Button>
-      <Button variant="contained" color="primary" onClick={handleDeleteQuestion}>
-        Delete Question
-      </Button>
-      
+      {props.authLevel > 2 && (
+        <div>
+          <label htmlFor="question">Question:</label>
+          <input
+            type="text"
+            value={question}
+            onChange={(e) => handleQuestionChange(e)}
+          />
+          {answers.map((answer, index) => {
+            return (
+              <div>
+                <label htmlFor="answer">Answer</label>
+                <input
+                  type="text"
+                  value={answer.Answer}
+                  onChange={(e) => {
+                    handleChangeAnswer(e, index);
+                  }}
+                />
+                <input
+                  type="checkbox"
+                  name=""
+                  id=""
+                  checked={answer.IsCorrect}
+                  value={answer.IsCorrect}
+                  onChange={(e) => {
+                    handleChangeAnswerCorrect(e, index);
+                  }}
+                />
+                {answers.length > 3 ? (
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => {
+                      handleDeleteAnswer(index);
+                    }}
+                  >
+                    Delete
+                  </Button>
+                ) : null}
+              </div>
+            );
+          })}
+          {answers.length < 5 ? (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleNewAnswer}
+            >
+              Add Answer
+            </Button>
+          ) : null}
+          <Button variant="contained" color="primary" onClick={handleUpdate}>
+            Update
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleDeleteQuestion}
+          >
+            Delete Question
+          </Button>
+        </div>
+      )}
+      {props.authLevel === 2 && (
+        <div>
+          {answers.map((answer) => {
+            return <p>{answer.Answer}</p>;
+          })}
+        </div>
+      )}
     </div>
   );
 };

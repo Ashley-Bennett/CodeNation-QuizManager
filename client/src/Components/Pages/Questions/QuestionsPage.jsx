@@ -47,6 +47,7 @@ const QuestionsPage = (props) => {
             </AccordionSummary>
             <AccordionDetails>
               <Answers
+                authLevel={props.authLevel}
                 questionId={question.Id}
                 question={question.Question}
                 callGetAllQuestionsForQuiz={callGetAllQuestionsForQuiz}
@@ -55,6 +56,7 @@ const QuestionsPage = (props) => {
           </Accordion>
         );
       })}
+      {props.authLevel < 3 && questions.length === 0 && <h1>No Questions Yet</h1>}
       {props.authLevel > 2 && (
         <Accordion>
           <AccordionSummary

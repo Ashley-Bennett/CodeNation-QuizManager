@@ -1,6 +1,6 @@
 import "./App.css";
 import React, { useEffect, useState } from "react";
-import { Router, Switch, Route, Redirect } from "react-router-dom";
+import { Router, Switch, Route, Link } from "react-router-dom";
 import history from "./Utils/history";
 import LoginPage from "./Components/Pages/Login/LoginPage";
 import QuizzesPage from "./Components/Pages/Quizzes/QuizzesPage";
@@ -12,6 +12,7 @@ import IconButton from "@material-ui/core/IconButton";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
+import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import { getPermissionsForPermissionId } from "./Utils/Axios";
 
 const App = () => {
@@ -66,7 +67,15 @@ const App = () => {
       {authLevel > 0 && (
         <AppBar position="static">
           <Toolbar style={{ display: "flex", justifyContent: "space-between" }}>
-            <Typography variant="h6">{path}</Typography>
+            <div />
+            {path === "Questions" ? (
+              <Breadcrumbs aria-label="breadcrumb">
+                <Link color="#ffffff" to="/quizzes/">Quizzes</Link>
+                <Typography color="#ffffff">Questions</Typography>
+              </Breadcrumbs>
+            ) : (
+              <Typography color="#ffffff">Quizzes</Typography>
+            )}
             <div>
               <IconButton
                 aria-label="account of current user"
