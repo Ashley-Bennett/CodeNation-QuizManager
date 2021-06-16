@@ -9,7 +9,7 @@ import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import Answers from "../../Answers/Answers";
 import "./QuestionsPage.css";
 
-const QuestionsPage = () => {
+const QuestionsPage = (props) => {
   const [quizId, setQuizId] = useState(null);
   const [questions, setQuestions] = useState([]);
 
@@ -18,6 +18,8 @@ const QuestionsPage = () => {
     const urlParams = new URLSearchParams(searchQuery);
     setQuizId(urlParams.get("quizId"));
     callGetAllQuestionsForQuiz(urlParams.get("quizId"));
+    props.handleSetPath("Questions")
+
   }, []);
 
   const callGetAllQuestionsForQuiz = (initQuizId) => {
@@ -38,7 +40,6 @@ const QuestionsPage = () => {
 
   return (
     <div className="questionsPageContainer">
-      <h1>Questions</h1>
       {questions.map((question) => {
         return (
           <Accordion>

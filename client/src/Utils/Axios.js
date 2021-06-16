@@ -110,6 +110,16 @@ const postNewQuestion = quizId => {
   })
 }
 
+const getPermissionsForPermissionId = permissionId => {
+  return new Promise(resolve => {
+    Axios.post("http://localhost:3001/auth/permissions", {
+      isAuthorised: true,
+      permissionId: permissionId
+    }).then(res => {
+      resolve(res)
+    })
+  })
+}
 
 export {
   postLogin,
@@ -121,5 +131,7 @@ export {
   postAnswersForQuestion,
   deleteAnswer,
   deleteQuestion,
-  postNewQuestion
+  postNewQuestion,
+  getPermissionsForPermissionId
+
 }

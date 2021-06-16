@@ -6,19 +6,20 @@ import {
   Button,
 } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 
 import { deleteQuiz, getQuizzes, postNewQuiz } from "../../../Utils/Axios";
 import "./QuizzesPage.css";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 
-const QuizzesPage = () => {
+const QuizzesPage = (props) => {
   const [quizzes, setQuizzes] = useState([]);
   const [creatingQuiz, setCreatingQuiz] = useState(false);
   const [newQuizName, setNewQuizName] = useState("");
 
   useEffect(() => {
     callGetQuizzes();
+    props.handleSetPath("Quizzes")
   }, []);
 
   const handleAddCardClick = (status) => {
@@ -56,7 +57,6 @@ const QuizzesPage = () => {
 
   return (
     <div className="quizzesPageContainer">
-      <h1>Quizzes</h1>
       <div className="quizzesPage_cardsWrapper">
         {quizzes.map((quiz) => {
           return (
@@ -131,6 +131,7 @@ const QuizzesPage = () => {
           <AddCircleOutlineIcon style={{ color: "#ffffff" }} />
         </Card>
       </div>
+      {!props.loggedIn && <Redirect to="/"/>}
     </div>
   );
 };

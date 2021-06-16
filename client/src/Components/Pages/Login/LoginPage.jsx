@@ -7,22 +7,14 @@ import { withRouter } from "react-router";
 import Button from "@material-ui/core/Button";
 import "./LoginPage.css";
 
-const LoginPage = () => {
+const LoginPage = (props) => {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
-  const [loggedIn, setLoggedIn] = useState(false)
-
-  useEffect(() => {
-    if(sessionStorage.getItem("isLoggedIn") === "true"){
-      setLoggedIn(true)
-    }
-  }, [])
 
   const handleSubmit = () => {
     postLogin(userName, password).then(res => {
       if (res.data.success) {
-        setLoggedIn(true)
-        sessionStorage.setItem("isLoggedIn", "true")
+        props.handleLogIn(res.data.data)
       }
     })
   }
@@ -63,7 +55,7 @@ const LoginPage = () => {
           Login
         </Button>
       </div>
-      {loggedIn ? <Redirect to="/quizzes" /> : null}
+      {props.loggedIn ? <Redirect to="/quizzes" /> : null}
     </div>
   );
 };

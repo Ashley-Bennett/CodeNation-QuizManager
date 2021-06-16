@@ -21,15 +21,6 @@ app.use(express.urlencoded({
   extended: true
 }))
 
-app.get("/a", (req, res) => {
-  const sqlInsert = "insert into testtable (name, number) values ('Ash', 1)"
-  db.query(sqlInsert, (err, result) => {
-    console.log(err);
-    console.log(result);
-    res.send("Hello s")
-  })
-})
-
 //  Login
 app.post("/auth/login", (req, res) => {
   const userName = req.body.userName
@@ -59,6 +50,28 @@ app.post("/auth/login", (req, res) => {
           res.send(["No user found with those credentials", success])
         }
       });
+    } else {
+      res.status(500).send(success)
+      console.log(err);
+      console.log(result);
+    }
+  })
+})
+
+// Get Permissions
+app.post("/auth/permissions", (req, res) => {
+  const sqlSelect = "select * from permissions where id = ?"
+
+  db.query(sqlSelect, [req.body.permissionId], (err, result) => {
+    let success = false
+    if (err) {
+      res.send([err, success])
+    } else if (result) {
+      success = true
+      res.send({
+        data: result,
+        success: success
+      })
     } else {
       res.status(500).send(success)
       console.log(err);
@@ -251,24 +264,17 @@ app.post("/answers/postAnswers", (req, res) => {
   const question = req.body.question
   const answers = req.body.answers
   const questionId = req.body.questionId
+
+  console.log(246, question);
+  console.log(247, answers);
+  console.log(248, questionId);
+
   if (isAuthorised) {
     if (question) {
       const sqlPut = "update cn.question set question = ? where id = ?"
       db.query(sqlPut, [question, questionId], (err, result) => {
-        let success = false
-        if (err) {
-          res.send([err, success])
-        } else if (result) {
-          success = true
-          res.send({
-            data: result,
-            success: success
-          })
-        } else {
-          res.status(500).send(success)
-          console.log(err);
-          console.log(result);
-        }
+        console.log(265, err);
+        console.log(266, result);
       })
     }
     if (answers) {
@@ -282,10 +288,9 @@ app.post("/answers/postAnswers", (req, res) => {
 
       // update existing answers
       existingAnswers.forEach(answer => {
-
         const sqlPut = "update answers set answer = ?, iscorrect = ? where id = ?"
         db.query(sqlPut, [answer.Answer, answer.IsCorrect, answer.Id], (err, result) => {
-          console.log(err);
+          console.log(284, err);
         })
       })
 
@@ -293,23 +298,16 @@ app.post("/answers/postAnswers", (req, res) => {
       newAnswers.forEach(answer => {
         const sqlPost = "insert into answers (answer, iscorrect, question) values (?, ?, ?)"
         db.query(sqlPost, [answer.Answer, answer.IsCorrect, questionId], (err, result) => {
-          let success = false
-          if (err) {
-            res.send([err, success])
-          } else if (result) {
-            success = true
-            res.send({
-              data: result,
-              success: success
-            })
-          } else {
-            res.status(500).send(success)
-            console.log(err);
-            console.log(result);
-          }
+          console.log(303, err);
+          console.log(304, result);
         })
       })
     }
+
+    res.send({
+      success: true
+    })
+
   } else {
     return res.status(401).send("Unauthorised Access")
   }
@@ -320,7 +318,7 @@ app.post("/questions/postNewQuestion", (req, res) => {
   const isAuthorised = req.body.isAuthorised
 
   const sqlInsert = "insert into question (question, quiz) values ('New Question', ?); SELECT LAST_INSERT_ID();"
-  db.query(sqlInsert,[req.body.quizId], (err, result) => {
+  db.query(sqlInsert, [req.body.quizId], (err, result) => {
     let success = false
     if (err) {
       res.send([err, success])
@@ -328,7 +326,7 @@ app.post("/questions/postNewQuestion", (req, res) => {
       const questionId = Object.values(result[1][0])[0]
       //  Insert default answers
       const sqlInsertAnswers = "insert into answers (answer, iscorrect, question) values ('Answer', true, ?);insert into answers (answer, iscorrect, question) values ('Answer', false, ?);insert into answers (answer, iscorrect, question) values ('Answer', false, ?);"
-      db.query(sqlInsertAnswers,[questionId,questionId,questionId], (err, result) => {
+      db.query(sqlInsertAnswers, [questionId, questionId, questionId], (err, result) => {
         if (err) {
           res.send([err, success])
         } else if (result) {
