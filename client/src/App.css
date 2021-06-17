@@ -5,10 +5,11 @@
 
 html {
   height: 100%;
-}
-body {
-  height: 100%;
 } */
+
+body{
+  background-image: url("./Assets/Images/tile_background_fix.png");
+}
 
 .App {
   margin: 10px;

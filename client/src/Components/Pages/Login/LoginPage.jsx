@@ -2,9 +2,14 @@ import React, { useState, useEffect } from "react";
 import { postLogin } from "../../../Utils/Axios";
 import { Redirect } from "react-router-dom";
 import { withRouter } from "react-router";
+import {
+  Button,
+  TextField,
+  Checkbox,
+  FormControlLabel,
+  Divider,
+} from "@material-ui/core";
 
-
-import Button from "@material-ui/core/Button";
 import "./LoginPage.css";
 
 const LoginPage = (props) => {
@@ -12,43 +17,50 @@ const LoginPage = (props) => {
   const [password, setPassword] = useState("");
 
   const handleSubmit = () => {
-    postLogin(userName, password).then(res => {
+    postLogin(userName, password).then((res) => {
       if (res.data.success) {
-        props.handleLogIn(res.data.data)
+        props.handleLogIn(res.data.data);
       }
-    })
-  }
+    });
+  };
 
   return (
     <div className="loginPageContainer">
       {/* Compnay Logo */}
       {/* <img src="" alt="" /> */}
-      <h1>Quiz Manager</h1>
+      <div className="loginPage_header">
+        <h1>Quiz Manager</h1>
+      </div>
       <div className="loginPage_form">
         <div className="loginPage_input">
-          <label htmlFor="userName">User Name</label>
-          <input
-            type="text"
-            name="userName"
+          <TextField
+            label="Username"
+            style={{ textAlign: "center" }}
+            inputProps={{ min: 0, style: { textAlign: "center" } }}
+            value={userName}
             onChange={(e) => {
               setUserName(e.target.value);
             }}
           />
         </div>
         <div className="loginPage_input">
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            name="password"
+          <TextField
+            label="Password"
+            style={{ textAlign: "center" }}
+            inputProps={{ min: 0, style: { textAlign: "center" } }}
+            value={password}
             onChange={(e) => {
               setPassword(e.target.value);
             }}
+            type="password"
+            color="#ffffff"
           />
         </div>
 
         <Button
           variant="contained"
           color="primary"
+          style={{ backgroundColor: "#004d40", margin: "20px 0 0 0" }}
           onClick={handleSubmit}
           className="loginPage_submit"
         >

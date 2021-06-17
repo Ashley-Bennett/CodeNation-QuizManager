@@ -66,14 +66,16 @@ const App = () => {
   return (
     <Router history={history}>
       {authLevel > 0 && (
-        <AppBar position="static">
+        <AppBar position="static" style={{ backgroundColor: "#004d40" }}>
           <Toolbar style={{ display: "flex", justifyContent: "space-between" }}>
             {path === "Questions" ? (
-              <Link  color="#ffffff" to="/quizzes/">
-                <Button variant="contained" color="secondary">Back</Button>
+              <Link color="#ffffff" to="/quizzes/">
+                <Button variant="contained" color="secondary">
+                  Back
+                </Button>
               </Link>
             ) : (
-              <div />
+              <div style={{width: 70}}/>
             )}
             {path === "Questions" ? (
               <Breadcrumbs aria-label="breadcrumb">

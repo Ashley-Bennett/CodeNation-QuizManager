@@ -11,3 +11,33 @@
   display: flex;
   align-self: center;
 }
+
+
+.loginPageContainer{
+  background-color: #ffffff;
+  max-width: 300px;
+  margin: 30px auto;
+  border-radius: 20px;
+}
+
+.loginPage_header{
+  width: 100%;
+  text-align: center;
+  margin: 0;
+  color: #ffffff;
+  background-color: #004d40;
+  border-radius: 20px 20px 0 0;
+
+}
+
+.loginPage_form .MuiInput-underline:after{
+  border-bottom: 2px solid #004d40;
+}
+.loginPage_form .MuiFormLabel-root.Mui-focused{
+  color: #004d40;
+}
+
+.loginPage_form{
+  margin: 10px;
+  padding: 10px;
+}
