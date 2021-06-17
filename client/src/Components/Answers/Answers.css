@@ -1,0 +1,62 @@
+.answersContainer {
+  max-width: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.answersEditContainer {
+  width: 100%;
+}
+
+.answersTopRow {
+  width: 100%;
+}
+
+.answers_questionInput {
+  width: 100%;
+}
+
+.answersMidRow {
+  width: 100%;
+  padding-left: 1.2em;
+}
+.answers_answers {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  margin: 10px 0;
+ }
+
+.answers_checkbox {
+  width: 180px;
+  text-align: center;
+}
+
+.answersBottomRow{
+  display: flex;
+  justify-content: flex-end;
+  align-items: baseline;
+  margin-top: 20px;
+  position: relative;
+}
+
+.answersBottomRow > button {
+  align-self: flex-start;
+  justify-self: flex-start;
+  margin: 10px 0;
+  position: absolute;
+  top:0;
+  left:0;
+}
+
+.answersBottomRow_standard{
+  display: flex;
+  flex-direction: column;
+}
+
+.answersBottomRow_standard button {
+  margin: 10px 0;
+}

@@ -67,7 +67,7 @@ const QuizzesPage = (props) => {
               <CardActions>
                 {props.authLevel > 2 && (
                   <Button
-                    style={{ backgroundColor: "#e57373", color: "#ffffff" }}
+                    style={{ backgroundColor: "#d11a2a", color: "#ffffff" }}
                     variant="contained"
                     onClick={() => {
                       handleDeleteQuiz(quiz.Id);

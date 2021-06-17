@@ -40,24 +40,30 @@ const QuestionsPage = (props) => {
 
   return (
     <div className="questionsPageContainer">
-      {questions.map((question) => {
-        return (
-          <Accordion disabled={props.authLevel > 1 ? false : true}>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              {question.Question}
-            </AccordionSummary>
-            <AccordionDetails>
-              <Answers
-                authLevel={props.authLevel}
-                questionId={question.Id}
-                question={question.Question}
-                callGetAllQuestionsForQuiz={callGetAllQuestionsForQuiz}
-              />
-            </AccordionDetails>
-          </Accordion>
-        );
-      })}
-      {props.authLevel < 3 && questions.length === 0 && <h1>No Questions Yet</h1>}
+      <ol className="questionAccordion">
+        {questions.map((question) => {
+          return (
+            <li>
+              <Accordion disabled={props.authLevel > 1 ? false : true}>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                  {question.Question}
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Answers
+                    authLevel={props.authLevel}
+                    questionId={question.Id}
+                    question={question.Question}
+                    callGetAllQuestionsForQuiz={callGetAllQuestionsForQuiz}
+                  />
+                </AccordionDetails>
+              </Accordion>
+            </li>
+          );
+        })}
+      </ol>
+      {props.authLevel < 3 && questions.length === 0 && (
+        <h1>No Questions Yet</h1>
+      )}
       {props.authLevel > 2 && (
         <Accordion>
           <AccordionSummary
@@ -70,7 +76,6 @@ const QuestionsPage = (props) => {
         </Accordion>
       )}
       {!props.loggedIn && <Redirect to="/" />}
-
     </div>
   );
 };
