@@ -12,36 +12,34 @@
   align-self: center;
 }
 
-
-.loginPageContainer{
+.loginPageContainer {
   background-color: #ffffff;
   max-width: 300px;
   margin: 30px auto;
   border-radius: 20px;
 }
 
-.loginPage_header{
+.loginPage_header {
   width: 100%;
   text-align: center;
   margin: 0;
   color: #ffffff;
   background-color: #004d40;
   border-radius: 20px 20px 0 0;
-
 }
 
-.loginPage_form .MuiInput-underline:after{
-  border-bottom: 2px solid #004d40;
+.MuiInput-underline:after {
+  border-bottom: 2px solid #004d40 !important;
 }
-.loginPage_form .MuiFormLabel-root.Mui-focused{
-  color: #004d40;
+.MuiFormLabel-root.Mui-focused {
+  color: #004d40 !important;
 }
 
-.loginPage_form{
+.loginPage_form {
   margin: 10px;
   padding: 10px;
 }
 
-.loginPage_login{
+.loginPage_login {
   margin-top: 20px;
 }

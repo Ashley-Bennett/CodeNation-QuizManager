@@ -4,18 +4,26 @@ import {
   CardActions,
   Typography,
   Button,
+  TextField,
+  Checkbox,
+  FormControlLabel,
+  Divider,
 } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 
 import { deleteQuiz, getQuizzes, postNewQuiz } from "../../../Utils/Axios";
 import "./QuizzesPage.css";
-import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 
+import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
+import VisibilityIcon from "@material-ui/icons/Visibility";
 const QuizzesPage = (props) => {
   const [quizzes, setQuizzes] = useState([]);
   const [creatingQuiz, setCreatingQuiz] = useState(false);
   const [newQuizName, setNewQuizName] = useState("");
+  const [quizErrorMessage, setQuizErrorMessage] = useState(false)
+
 
   useEffect(() => {
     callGetQuizzes();
@@ -25,6 +33,7 @@ const QuizzesPage = (props) => {
   const handleAddCardClick = (status) => {
     setNewQuizName("");
     setCreatingQuiz(status);
+    setQuizErrorMessage(false)
   };
 
   const handleQuizNameChange = (e) => {
@@ -32,11 +41,23 @@ const QuizzesPage = (props) => {
   };
 
   const handlePostNewQuiz = () => {
+    setQuizErrorMessage(false)
     postNewQuiz(newQuizName).then((res) => {
       if (res.data.success) {
         setNewQuizName("");
         setCreatingQuiz(false);
         callGetQuizzes();
+      } else {
+        console.log(res.data);
+        switch (res.data[0].code) {
+          case "ER_DUP_ENTRY":
+            setQuizErrorMessage("A quiz by this name already exists")
+            break;
+        
+          default:
+            break;
+        }
+
       }
     });
   };
@@ -60,11 +81,19 @@ const QuizzesPage = (props) => {
       <div className="quizzesPage_cardsWrapper">
         {quizzes.map((quiz) => {
           return (
-            <Card className="quizzesPage_quizCard" key={quiz.id}>
-              <CardContent>
-                <Typography>{quiz.Name}</Typography>
-              </CardContent>
-              <CardActions>
+            <Card
+              className="quizzesPage_quizCard"
+              key={quiz.id}
+              style={{
+                backgroundColor: "#004d40",
+                color: "#ffffff",
+                padding: 10,
+              }}
+            >
+              <div className="quizzesPage_quizCardHeader">
+                <h2>{quiz.Name}</h2>
+              </div>
+              <CardActions className="quizzesPage_quizCardActions">
                 {props.authLevel > 2 && (
                   <Button
                     style={{ backgroundColor: "#d11a2a", color: "#ffffff" }}
@@ -73,7 +102,7 @@ const QuizzesPage = (props) => {
                       handleDeleteQuiz(quiz.Id);
                     }}
                   >
-                    Delete
+                    Delete Quiz <DeleteForeverIcon />
                   </Button>
                 )}
                 <Link
@@ -83,8 +112,11 @@ const QuizzesPage = (props) => {
                     state: { quizId: "true" },
                   }}
                 >
-                  <Button variant="contained" color="primary">
-                    View
+                  <Button
+                    variant="contained"
+                    style={{ backgroundColor: "#00796b", color: "#ffffff" }}
+                  >
+                    View Quiz <VisibilityIcon />
                   </Button>
                 </Link>
               </CardActions>
@@ -92,21 +124,26 @@ const QuizzesPage = (props) => {
           );
         })}
         {creatingQuiz ? (
-          <Card className="quizzesPage_quizCard">
+          <Card className="quizzesPage_quizCard quizzesPage_newQuizCard">
             <CardContent>
-              <label htmlFor="quizName">Quiz Name:</label>
-              <input
-                type="text"
-                name="quizName"
+              <TextField
+                label="Quiz Name"
+                value={newQuizName}
                 onChange={(e) => {
                   handleQuizNameChange(e);
                 }}
+                error={quizErrorMessage}
+            helperText={quizErrorMessage && quizErrorMessage}
               />
             </CardContent>
-            <CardActions>
+            <CardActions className="quizzesPage_newQuizCardActions" style={{padding: "0 17px"}}>
               <Button
-                style={{ backgroundColor: "#ffb74d", color: "#ffffff" }}
-                variant="contained"
+                // style={{ backgroundColor: "#ffb74d", color: "#ffffff" }}
+                variant="outlined"
+                style={{
+                  borderColor: "#00796b",
+                  color: "#00796b",
+                }}
                 onClick={() => {
                   handleAddCardClick(false);
                 }}
@@ -115,7 +152,7 @@ const QuizzesPage = (props) => {
               </Button>
               <Button
                 variant="contained"
-                color="primary"
+                style={{ backgroundColor: "#00796b", color: "#ffffff" }}
                 onClick={handlePostNewQuiz}
               >
                 Save
@@ -127,12 +164,16 @@ const QuizzesPage = (props) => {
         {props.authLevel > 2 && (
           <Card
             className="quizzesPage_addCard"
-            style={{ backgroundColor: "#4caf50" }}
+            style={{ backgroundColor: "#00796b" }}
             onClick={() => {
               handleAddCardClick(true);
             }}
           >
-            <AddCircleOutlineIcon style={{ color: "#ffffff" }} />
+            <h1>Create a new quiz</h1>
+            <AddCircleOutlineIcon
+              style={{ color: "#ffffff" }}
+              fontSize="large"
+            />
           </Card>
         )}
       </div>

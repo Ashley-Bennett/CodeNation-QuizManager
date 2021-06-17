@@ -9,8 +9,15 @@ html {
 
 body{
   background-image: url("./Assets/Images/tile_background_fix.png");
+  background-repeat: repeat;
+  background-position: 0%;
 }
 
 .App {
   margin: 10px;
+}
+
+a {
+  /* text-decoration: none !important; */
+  color: inherit;
 }

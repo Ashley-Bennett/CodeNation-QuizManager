@@ -70,16 +70,19 @@ const App = () => {
           <Toolbar style={{ display: "flex", justifyContent: "space-between" }}>
             {path === "Questions" ? (
               <Link color="#ffffff" to="/quizzes/">
-                <Button variant="contained" color="secondary">
+                <Button
+                  variant="contained"
+                  style={{ backgroundColor: "#00796b", color: "#ffffff" }}
+                >
                   Back
                 </Button>
               </Link>
             ) : (
-              <div style={{width: 70}}/>
+              <div style={{ width: 70 }} />
             )}
             {path === "Questions" ? (
-              <Breadcrumbs aria-label="breadcrumb">
-                <Link color="#ffffff" to="/quizzes/">
+              <Breadcrumbs aria-label="breadcrumb" style={{color: "#ffffff"}}>
+                <Link style={{color: "#ffffff", textDecoration:"underlined"}} to="/quizzes/">
                   Quizzes
                 </Link>
                 <Typography color="#ffffff">Questions</Typography>
