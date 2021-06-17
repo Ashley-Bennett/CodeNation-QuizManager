@@ -1,9 +1,3 @@
-.questionsPage_addQuestionBox{
-  background-color: #4caf50;
-
-  color: white
-}
-
 .questionsPageContainer{
   max-width: 930px;
   display: flex;
@@ -15,4 +9,14 @@
 
 .questionAccordion{
   width: 100%;
+}
+
+.questionsPage_questionHeader h2{
+  margin: 5px;
+}
+
+.questionsPage_addQuestionBox{
+  width: 200px;
+  align-self: center;
+  color: #ffffff;
 }

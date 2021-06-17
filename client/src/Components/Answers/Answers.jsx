@@ -140,7 +140,7 @@ const Answers = (props) => {
                             value=""
                             control={
                               <Checkbox
-                                color="primary"
+                                style={{color: "#00796b"}}
                                 checked={answer.IsCorrect}
                                 value={answer.IsCorrect}
                                 onChange={(e) => {
