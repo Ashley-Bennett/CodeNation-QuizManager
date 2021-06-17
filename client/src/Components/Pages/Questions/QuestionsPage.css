@@ -20,3 +20,23 @@
   align-self: center;
   color: #ffffff;
 }
+
+.questionsLoadingSpinner{
+  text-align: center;
+  margin: 50px;
+}
+
+.answers_viewModeContainer{
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1000px;
+}
+
+.answers_viewModeAnswers{
+  font-size: 20px;
+}

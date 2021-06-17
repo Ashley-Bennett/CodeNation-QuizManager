@@ -4,9 +4,10 @@ import { getAllQuestionsForQuiz, postNewQuestion } from "../../../Utils/Axios";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
-import { Typography, Button } from "@material-ui/core";
+import { Typography, Button, CircularProgress } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
+import NotInterestedIcon from "@material-ui/icons/NotInterested";
 
 import Answers from "../../Answers/Answers";
 import "./QuestionsPage.css";
@@ -14,6 +15,7 @@ import "./QuestionsPage.css";
 const QuestionsPage = (props) => {
   const [quizId, setQuizId] = useState(null);
   const [questions, setQuestions] = useState([]);
+  const [isLoadingQuestions, setIsLoadingQuestions] = useState(false);
 
   useEffect(() => {
     let searchQuery = window.location.search;
@@ -24,7 +26,10 @@ const QuestionsPage = (props) => {
   }, []);
 
   const callGetAllQuestionsForQuiz = (initQuizId) => {
+    setIsLoadingQuestions(true);
+    setQuestions([]);
     getAllQuestionsForQuiz(quizId || initQuizId).then((res) => {
+      setIsLoadingQuestions(false);
       if (res.data.success) {
         setQuestions(res.data.data);
       }
@@ -41,60 +46,78 @@ const QuestionsPage = (props) => {
 
   return (
     <div className="questionsPageContainer">
-      <ol className="questionAccordion">
-        {questions.map((question) => {
-          return (
-            <Accordion
-              style={{ borderRadius: 20, margin: "10px 0" }}
-              className="questionsPage_question"
-              disabled={props.authLevel > 1 ? false : true}
+      {isLoadingQuestions ? (
+        <div className="questionsLoadingSpinner">
+          <CircularProgress
+            color="#004d40"
+            style={{ width: 100, height: 100 }}
+          />
+        </div>
+      ) : (
+        <>
+          <ol className="questionAccordion">
+            {questions.map((question) => {
+              return (
+                <Accordion
+                  style={{ borderRadius: 20, margin: "10px 0" }}
+                  className="questionsPage_question"
+                  disabled={props.authLevel > 1 ? false : true}
+                >
+                  <AccordionSummary
+                    style={{
+                      backgroundColor: "#004d40",
+                      color: "#ffffff",
+                      borderRadius: 20,
+                      paddingLeft: 30,
+                      opacity: 1,
+                    }}
+                    className="questionsPage_questionHeader"
+                    expandIcon={
+                      props.authLevel > 1 ? (
+                        <ExpandMoreIcon style={{ color: "#ffffff" }} />
+                      ) : (
+                        <NotInterestedIcon style={{ color: "#ffffff" }} />
+                      )
+                    }
+                  >
+                    <li>
+                      <h2>{question.Question}</h2>
+                    </li>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <Answers
+                      authLevel={props.authLevel}
+                      questionId={question.Id}
+                      question={question.Question}
+                      callGetAllQuestionsForQuiz={callGetAllQuestionsForQuiz}
+                    />
+                  </AccordionDetails>
+                </Accordion>
+              );
+            })}
+          </ol>
+          {props.authLevel < 3 && questions.length === 0 && (
+            <h1>No Questions Yet</h1>
+          )}
+          {props.authLevel > 2 && (
+            <Button
+              style={{ backgroundColor: "#00796b", color: "#ffffff" }}
+              className="questionsPage_addQuestionBox"
+              onClick={handleAddNewQuestion}
             >
-              <AccordionSummary
-                style={{
-                  backgroundColor: "#004d40",
-                  color: "#ffffff",
-                  borderRadius: 20,
-                  paddingLeft: 30,
-                }}
-                className="questionsPage_questionHeader"
-                expandIcon={<ExpandMoreIcon style={{ color: "#ffffff" }} />}
-              >
-                <li>
-                  <h2>{question.Question}</h2>
-                </li>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Answers
-                  authLevel={props.authLevel}
-                  questionId={question.Id}
-                  question={question.Question}
-                  callGetAllQuestionsForQuiz={callGetAllQuestionsForQuiz}
-                />
-              </AccordionDetails>
-            </Accordion>
-          );
-        })}
-      </ol>
-      {props.authLevel < 3 && questions.length === 0 && (
-        <h1>No Questions Yet</h1>
-      )}
-      {props.authLevel > 2 && (
-        <Button
-            style={{ backgroundColor: "#00796b",color: "#ffffff" }}
-            className="questionsPage_addQuestionBox"
-          onClick={handleAddNewQuestion}
-        >
-          Add a question
-        </Button>
-        // <Accordion>
-        //   <AccordionSummary
-        //     className="questionsPage_addQuestionBox"
-        //     expandIcon={<AddCircleOutlineIcon style={{ color: "#ffffff" }} />}
-        //     onClick={handleAddNewQuestion}
-        //   >
-        //     Add a question
-        //   </AccordionSummary>
-        // </Accordion>
+              Add a question
+            </Button>
+            // <Accordion>
+            //   <AccordionSummary
+            //     className="questionsPage_addQuestionBox"
+            //     expandIcon={<AddCircleOutlineIcon style={{ color: "#ffffff" }} />}
+            //     onClick={handleAddNewQuestion}
+            //   >
+            //     Add a question
+            //   </AccordionSummary>
+            // </Accordion>
+          )}
+        </>
       )}
       {!props.loggedIn && <Redirect to="/" />}
     </div>

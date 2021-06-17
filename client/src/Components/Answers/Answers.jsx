@@ -11,6 +11,11 @@ import {
   Checkbox,
   FormControlLabel,
   Divider,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from "@material-ui/core";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
@@ -21,6 +26,7 @@ import "./Answers.css";
 const Answers = (props) => {
   const [answers, setAnswers] = useState([]);
   const [question, setQuestion] = useState("");
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   useEffect(() => {
     setQuestion(props.question);
@@ -28,6 +34,7 @@ const Answers = (props) => {
   }, []);
 
   const callGetAllAnswers = () => {
+    console.log(props.questionId);
     getAllAnswersForQuestion(props.questionId).then((res) => {
       if (res.data.success) {
         setAnswers(res.data.data);
@@ -105,8 +112,16 @@ const Answers = (props) => {
     deleteQuestion(props.questionId).then((res) => {
       if (res.data.success) {
         props.callGetAllQuestionsForQuiz();
+        callGetAllAnswers();
       }
     });
+  };
+
+  const handleCloseDeleteDialog = () => {
+    setIsDeleteDialogOpen(false);
+  };
+  const handleOpenDeleteDialog = () => {
+    setIsDeleteDialogOpen(true);
   };
 
   return (
@@ -140,7 +155,7 @@ const Answers = (props) => {
                             value=""
                             control={
                               <Checkbox
-                                style={{color: "#00796b"}}
+                                style={{ color: "#00796b" }}
                                 checked={answer.IsCorrect}
                                 value={answer.IsCorrect}
                                 onChange={(e) => {
@@ -156,6 +171,7 @@ const Answers = (props) => {
                           />
                         ) : (
                           <Checkbox
+                            style={{ color: "#00796b" }}
                             color="primary"
                             checked={answer.IsCorrect}
                             value={answer.IsCorrect}
@@ -191,41 +207,95 @@ const Answers = (props) => {
             {answers.length < 5 ? (
               <Button
                 variant="outlined"
-                color="primary"
                 onClick={handleNewAnswer}
+                style={{
+                  borderColor: "#00796b",
+                  color: "#00796b",
+                }}
               >
                 Add Answer
-                <AddCircleOutlineIcon style={{margin: "0 0 0 10"}} />
+                <AddCircleOutlineIcon style={{ margin: "0 0 0 10" }} />
               </Button>
             ) : null}
             <div className="answersBottomRow_standard">
               <Button
                 variant="contained"
-                style={{ backgroundColor: "#4caf50", color: "#ffffff" }}
+                style={{ backgroundColor: "#00796b", color: "#ffffff" }}
                 onClick={handleUpdate}
               >
-                Save And Update <SaveIcon style={{margin: "0 0 0 10"}} />
+                Save And Update <SaveIcon style={{ margin: "0 0 0 10" }} />
               </Button>
               <Button
                 variant="contained"
                 color="primary"
                 style={{ backgroundColor: "#d11a2a", color: "#ffffff" }}
-                onClick={handleDeleteQuestion}
+                onClick={handleOpenDeleteDialog}
               >
-                Delete Question <DeleteForeverIcon  style={{margin: "0 0 0 10"}}/>
+                Delete Question{" "}
+                <DeleteForeverIcon style={{ margin: "0 0 0 10" }} />
               </Button>
             </div>
           </div>
         </div>
       )}
       {props.authLevel === 2 && (
-        <ol type="A">
+        <ol className="answers_viewModeContainer" type="A">
           {answers.map((answer) => {
-            return <li>{answer.Answer}</li>;
+            return (
+              <>
+                <li className="answers_viewModeAnswers">{answer.Answer}</li>
+                <Divider variant="middle" />
+              </>
+            );
           })}
         </ol>
       )}
-      
+      <Dialog
+        open={isDeleteDialogOpen}
+        onClose={handleCloseDeleteDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle
+          id="alert-dialog-title"
+          style={{ backgroundColor: "#004d40", color: "#ffffff" }}
+        >
+          {"Delete this question for good?"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText
+            id="alert-dialog-description"
+            style={{ color: "#000000" }}
+          >
+            Deleting this question will also delete any answers associated to
+            this question. Are you sure you wan to delete this question?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={handleCloseDeleteDialog}
+            color="primary"
+            variant="outlined"
+            style={{
+              borderColor: "#00796b",
+              color: "#00796b",
+            }}
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={() => {
+              handleCloseDeleteDialog();
+              handleDeleteQuestion();
+            }}
+            variant="contained"
+            style={{ backgroundColor: "#d11a2a", color: "#ffffff" }}
+            autoFocus
+          >
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

@@ -66,7 +66,7 @@ const App = () => {
   return (
     <Router history={history}>
       {authLevel > 0 && (
-        <AppBar position="static" style={{ backgroundColor: "#004d40" }}>
+        <AppBar position="sticky" style={{ backgroundColor: "#004d40" }}>
           <Toolbar style={{ display: "flex", justifyContent: "space-between" }}>
             {path === "Questions" ? (
               <Link color="#ffffff" to="/quizzes/">
