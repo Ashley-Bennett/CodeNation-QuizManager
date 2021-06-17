@@ -7,6 +7,7 @@ import {
   TextField,
   Checkbox,
   FormControlLabel,
+  CircularProgress,
   Divider,
 } from "@material-ui/core";
 
@@ -15,11 +16,19 @@ import "./LoginPage.css";
 const LoginPage = (props) => {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState(false);
+  const [loggingIn, setIsLoggingIn] = useState(false);
 
   const handleSubmit = () => {
+    setErrorMessage(false);
+    setIsLoggingIn(true);
     postLogin(userName, password).then((res) => {
+    setIsLoggingIn(false)
+
       if (res.data.success) {
         props.handleLogIn(res.data.data);
+      } else {
+        setErrorMessage(res.data[0]);
       }
     });
   };
@@ -34,6 +43,8 @@ const LoginPage = (props) => {
       <div className="loginPage_form">
         <div className="loginPage_input">
           <TextField
+            error={errorMessage}
+            helperText={errorMessage && errorMessage}
             label="Username"
             style={{ textAlign: "center" }}
             inputProps={{ min: 0, style: { textAlign: "center" } }}
@@ -43,8 +54,11 @@ const LoginPage = (props) => {
             }}
           />
         </div>
+        <Divider />
         <div className="loginPage_input">
           <TextField
+            error={errorMessage}
+            helperText={errorMessage && errorMessage}
             label="Password"
             style={{ textAlign: "center" }}
             inputProps={{ min: 0, style: { textAlign: "center" } }}
@@ -57,15 +71,21 @@ const LoginPage = (props) => {
           />
         </div>
 
-        <Button
-          variant="contained"
-          color="primary"
-          style={{ backgroundColor: "#004d40", margin: "20px 0 0 0" }}
-          onClick={handleSubmit}
-          className="loginPage_submit"
-        >
-          Login
-        </Button>
+        <div className="loginPage_login">
+          {loggingIn ? (
+            <CircularProgress color="#004d40"/>
+          ) : (
+            <Button
+              variant="contained"
+              color="primary"
+              style={{ backgroundColor: "#004d40"}}
+              onClick={handleSubmit}
+              className="loginPage_submit"
+            >
+              Login
+            </Button>
+          )}
+        </div>
       </div>
       {props.loggedIn ? <Redirect to="/quizzes" /> : null}
     </div>
