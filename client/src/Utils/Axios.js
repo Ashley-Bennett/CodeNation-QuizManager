@@ -122,16 +122,15 @@ const getPermissionsForPermissionId = permissionId => {
 }
 
 export {
-  postLogin,
-  getQuizzes,
-  postNewQuiz,
-  deleteQuiz,
-  getAllQuestionsForQuiz,
-  getAllAnswersForQuestion,
-  postAnswersForQuestion,
   deleteAnswer,
   deleteQuestion,
+  deleteQuiz,
+  getQuizzes,
+  getAllAnswersForQuestion,
+  getAllQuestionsForQuiz,
+  getPermissionsForPermissionId,
+  postAnswersForQuestion,
+  postLogin,
   postNewQuestion,
-  getPermissionsForPermissionId
-
+  postNewQuiz,
 }

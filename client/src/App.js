@@ -82,7 +82,7 @@ const App = () => {
               <div style={{ width: 70 }} />
             )}
             {path === "Questions" ? (
-              <Breadcrumbs aria-label="breadcrumb" style={{ color: "#ffffff" }}>
+              <Breadcrumbs style={{ color: "#ffffff" }}>
                 <Link
                   style={{ color: "#ffffff", textDecoration: "underlined" }}
                   to="/quizzes/"
@@ -95,13 +95,7 @@ const App = () => {
               <h1 style={{ margin: 0 }}>Quizzes</h1>
             )}
             <div>
-              <IconButton
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleMenu}
-                color="inherit"
-              >
+              <IconButton onClick={handleMenu} color="inherit">
                 <AccountCircle />
               </IconButton>
               <Menu

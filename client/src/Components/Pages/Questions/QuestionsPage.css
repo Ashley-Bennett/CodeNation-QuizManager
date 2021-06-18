@@ -1,42 +1,42 @@
-.questionsPageContainer{
-  max-width: 930px;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
+.questionsPageContainer {
   align-self: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   margin: 0 auto;
+  max-width: 930px;
 }
 
-.questionAccordion{
+.questionAccordion {
   width: 100%;
 }
 
-.questionsPage_questionHeader h2{
+.questionsPage_questionHeader {
   margin: 5px;
 }
 
-.questionsPage_addQuestionBox{
-  width: 200px;
+.questionsPage_addQuestionBox {
   align-self: center;
   color: #ffffff;
+  width: 200px;
 }
 
-.questionsLoadingSpinner{
-  text-align: center;
+.questionsLoadingSpinner {
   margin: 50px;
+  text-align: center;
 }
 
-.answers_viewModeContainer{
-  padding: 0;
-  margin: 0;
-  width: 100%;
+.answers_viewModeContainer {
+  align-items: center;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: center;
+  margin: 0;
   max-width: 1000px;
+  padding: 0;
+  width: 100%;
 }
 
-.answers_viewModeAnswers{
+.answers_viewModeAnswers {
   font-size: 20px;
 }

@@ -1,38 +1,31 @@
 .loginPageContainer,
 .loginPage_form,
 .loginPage_input {
-  display: flex;
-  justify-content: center;
   align-items: center;
+  display: flex;
   flex-direction: column;
+  justify-content: center;
 }
 
 .loginPage_submit {
-  display: flex;
   align-self: center;
+  display: flex;
 }
 
 .loginPageContainer {
   background-color: #ffffff;
-  max-width: 300px;
-  margin: 30px auto;
   border-radius: 20px;
+  margin: 30px auto;
+  max-width: 300px;
 }
 
 .loginPage_header {
-  width: 100%;
-  text-align: center;
-  margin: 0;
-  color: #ffffff;
   background-color: #004d40;
   border-radius: 20px 20px 0 0;
-}
-
-.MuiInput-underline:after {
-  border-bottom: 2px solid #004d40 !important;
-}
-.MuiFormLabel-root.Mui-focused {
-  color: #004d40 !important;
+  color: #ffffff;
+  margin: 0;
+  text-align: center;
+  width: 100%;
 }
 
 .loginPage_form {

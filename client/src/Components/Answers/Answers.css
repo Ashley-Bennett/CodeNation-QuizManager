@@ -1,10 +1,10 @@
 .answersContainer {
-  max-width: 80%;
+  align-items: center;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
   margin: 0 auto;
+  max-width: 80%;
 }
 
 .answersEditContainer {
@@ -20,25 +20,25 @@
 }
 
 .answersMidRow {
+  padding-left: 20px;
   width: 100%;
-  padding-left: 1.2em;
 }
 .answers_answers {
+  align-items: flex-end;
   display: flex;
   justify-content: space-around;
-  align-items: flex-end;
   margin: 10px 0;
  }
 
 .answers_checkbox {
-  width: 180px;
   text-align: center;
+  width: 180px;
 }
 
 .answersBottomRow{
+  align-items: baseline;
   display: flex;
   justify-content: flex-end;
-  align-items: baseline;
   margin-top: 20px;
   position: relative;
 }
@@ -46,10 +46,10 @@
 .answersBottomRow > button {
   align-self: flex-start;
   justify-self: flex-start;
+  left:0;
   margin: 10px 0;
   position: absolute;
   top:0;
-  left:0;
 }
 
 .answersBottomRow_standard{

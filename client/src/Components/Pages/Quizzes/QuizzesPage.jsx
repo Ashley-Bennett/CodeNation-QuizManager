@@ -106,8 +106,10 @@ const QuizzesPage = (props) => {
                   padding: 10,
                 }}
               >
-                <div className="quizzesPage_quizCardHeader">
-                  <h2>{quiz.QuizName}</h2>
+                <div className="quizzesPage_quizCardHeaderContainer">
+                  <h2 className="quizzesPage_quizCardHeader">
+                    {quiz.QuizName}
+                  </h2>
                 </div>
                 <CardActions className="quizzesPage_quizCardActions">
                   {props.authLevel > 2 && (
@@ -142,7 +144,7 @@ const QuizzesPage = (props) => {
               </Card>
             );
           })}
-          {creatingQuiz ? (
+          {creatingQuiz && (
             <Card className="quizzesPage_quizCard quizzesPage_newQuizCard">
               <CardContent>
                 <TextField
@@ -160,7 +162,6 @@ const QuizzesPage = (props) => {
                 style={{ padding: "0 17px" }}
               >
                 <Button
-                  // style={{ backgroundColor: "#ffb74d", color: "#ffffff" }}
                   variant="outlined"
                   style={{
                     borderColor: "#00796b",
@@ -181,7 +182,7 @@ const QuizzesPage = (props) => {
                 </Button>
               </CardActions>
             </Card>
-          ) : null}
+          )}
           {props.authLevel < 3 && quizzes.length === 0 && (
             <h1>No Quizzes Yet</h1>
           )}
@@ -209,8 +210,6 @@ const QuizzesPage = (props) => {
           handleToggleDeleteDialog(false);
           setSelectedQuiz(null);
         }}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
       >
         <DialogTitle
           id="alert-dialog-title"

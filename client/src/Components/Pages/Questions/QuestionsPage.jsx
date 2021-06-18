@@ -73,7 +73,6 @@ const QuestionsPage = (props) => {
                       paddingLeft: 30,
                       opacity: 1,
                     }}
-                    className="questionsPage_questionHeader"
                     expandIcon={
                       props.authLevel > 1 ? (
                         <ExpandMoreIcon style={{ color: "#ffffff" }} />
@@ -83,7 +82,9 @@ const QuestionsPage = (props) => {
                     }
                   >
                     <li>
-                      <h2>{question.QuestionName}</h2>
+                      <h2 className="questionsPage_questionHeader">
+                        {question.QuestionName}
+                      </h2>
                     </li>
                   </AccordionSummary>
                   <AccordionDetails>
@@ -109,15 +110,6 @@ const QuestionsPage = (props) => {
             >
               Add a question
             </Button>
-            // <Accordion>
-            //   <AccordionSummary
-            //     className="questionsPage_addQuestionBox"
-            //     expandIcon={<AddCircleOutlineIcon style={{ color: "#ffffff" }} />}
-            //     onClick={handleAddNewQuestion}
-            //   >
-            //     Add a question
-            //   </AccordionSummary>
-            // </Accordion>
           )}
         </>
       )}

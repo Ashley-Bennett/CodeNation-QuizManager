@@ -24,7 +24,6 @@ const LoginPage = (props) => {
     setIsLoggingIn(true);
     postLogin(userName, password).then((res) => {
       setIsLoggingIn(false);
-
       if (res.data.success) {
         props.handleLogIn(res.data.data);
       } else {
@@ -35,8 +34,6 @@ const LoginPage = (props) => {
 
   return (
     <div className="loginPageContainer">
-      {/* Compnay Logo */}
-      {/* <img src="" alt="" /> */}
       <div className="loginPage_header">
         <img
           src={companyLogo}
@@ -97,7 +94,7 @@ const LoginPage = (props) => {
           )}
         </div>
       </form>
-      {props.loggedIn ? <Redirect to="/quizzes" /> : null}
+      {props.loggedIn && <Redirect to="/quizzes" />}
     </div>
   );
 };

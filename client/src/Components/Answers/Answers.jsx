@@ -104,7 +104,6 @@ const Answers = (props) => {
       Question: props.questionId,
       IsDeleted: 0,
     });
-
     setAnswers(newArr);
   };
 
@@ -158,9 +157,6 @@ const Answers = (props) => {
                                 onChange={(e) => {
                                   handleChangeAnswerCorrect(e, index);
                                 }}
-                                inputProps={{
-                                  "aria-label": "primary checkbox",
-                                }}
                               />
                             }
                             label="Is A Correct Answer"
@@ -175,17 +171,15 @@ const Answers = (props) => {
                             onChange={(e) => {
                               handleChangeAnswerCorrect(e, index);
                             }}
-                            inputProps={{ "aria-label": "primary checkbox" }}
                           />
                         )}
                       </div>
-                      {answers.length > 3 ? (
+                      {answers.length > 3 && (
                         <IconButton
                           onClick={() => {
                             handleDeleteAnswer(index);
                           }}
                           color="#d11a2a"
-                          aria-label="upload picture"
                           component="span"
                         >
                           <DeleteForeverIcon
@@ -195,21 +189,7 @@ const Answers = (props) => {
                             }}
                           />
                         </IconButton>
-                      ) : //   <Button
-                      //     variant="outlined"
-                      // style={{
-                      //   borderColor: "#d11a2a",
-                      //   color: "#d11a2a",
-                      // }}
-                      //     onClick={() => {
-                      //       handleDeleteAnswer(index);
-                      //     }}
-                      // endIcon={<VisibilityIcon />}
-
-                      //   >
-                      //     <DeleteForeverIcon />
-                      //   </Button>
-                      null}
+                      )}
                     </div>
                   </li>
                   <Divider />
@@ -218,7 +198,7 @@ const Answers = (props) => {
             })}
           </ol>
           <div className="answersBottomRow">
-            {answers.length < 5 ? (
+            {answers.length < 5 && (
               <Button
                 variant="outlined"
                 onClick={handleNewAnswer}
@@ -230,7 +210,7 @@ const Answers = (props) => {
               >
                 Add Answer
               </Button>
-            ) : null}
+            )}
             <div className="answersBottomRow_standard">
               <Button
                 variant="contained"
@@ -268,8 +248,6 @@ const Answers = (props) => {
       <Dialog
         open={isDeleteDialogOpen}
         onClose={() => handleToggleDeleteDialog(false)}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
       >
         <DialogTitle
           id="alert-dialog-title"
