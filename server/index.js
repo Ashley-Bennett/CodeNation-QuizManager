@@ -4,6 +4,7 @@ import password from "./DBPassword.js";
 import bodyParser from "body-parser";
 import cors from "cors"
 import bcrypt from "bcryptjs"
+import sqlCreateTables from "./initSqlTables.js";
 const app = express()
 
 const db = mysql.createPool({
@@ -11,7 +12,7 @@ const db = mysql.createPool({
   user: "root",
   //  Password stored locally
   password: password,
-  database: "cn",
+  database: "cn_test",
   multipleStatements: true
 })
 
@@ -240,7 +241,6 @@ app.post("/answers/deleteAnswer", (req, res) => {
   })
 })
 
-
 //  Delete Question
 app.post("/questions/deleteQuestion", (req, res) => {
   const isAuthorised = req.body.isAuthorised
@@ -358,13 +358,35 @@ app.post("/questions/postNewQuestion", (req, res) => {
 
 //  Create a user
 app.post("/auth/createUser", (req, res) => {
-  const sqlSelect = "insert into cn.users (username, password, permissions) values (?, ?, ?)"
+  const sqlSelect = "insert into users (username, password, permissions) values (?, ?, ?)"
   db.query(sqlSelect, [req.body.userName, bcrypt.hashSync(req.body.password, bcrypt.genSaltSync()), req.body.permissionsId], (err, result) => {
     let success = false
     if (err) {
       res.send([err, success])
     } else if (result) {
       success = true
+      res.send({
+        data: result,
+        success: success
+      })
+    } else {
+      res.status(500).send(success)
+      console.log(err);
+      console.log(result);
+    }
+  })
+})
+
+//  Create initial tables
+app.post("/init", (req, res) => {
+  const sqlInsert = sqlCreateTables
+  db.query(sqlInsert,(err, result) => {
+    let success = false
+    if (err) {
+      res.send([err, success])
+    } else if (result) {
+      success = true
+      console.log(result);
       res.send({
         data: result,
         success: success
