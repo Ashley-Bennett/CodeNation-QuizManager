@@ -52,8 +52,7 @@ const QuestionsPage = (props) => {
       {isLoadingQuestions ? (
         <div className="questionsLoadingSpinner">
           <CircularProgress
-            color="#004d40"
-            style={{ width: 100, height: 100 }}
+            style={{ width: 100, height: 100, color: "#004d40" }}
           />
         </div>
       ) : (

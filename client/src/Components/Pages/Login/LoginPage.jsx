@@ -21,7 +21,8 @@ const LoginPage = (props) => {
   const [errorMessage, setErrorMessage] = useState(false);
   const [loggingIn, setIsLoggingIn] = useState(false);
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault()
     setErrorMessage(false);
     setIsLoggingIn(true);
     postLogin(userName, password).then((res) => {
@@ -40,10 +41,14 @@ const LoginPage = (props) => {
       {/* Compnay Logo */}
       {/* <img src="" alt="" /> */}
       <div className="loginPage_header">
-        <img src={companyLogo} style={{ width: "70%", marginTop: 20 }} />
+        <img
+          src={companyLogo}
+          style={{ width: "70%", marginTop: 20 }}
+          alt="WebbiSkools Logo"
+        />
         <h1>Quiz Manager</h1>
       </div>
-      <div className="loginPage_form">
+      <form autoComplete="on" className="loginPage_form" onSubmit={(e) => handleSubmit(e)}>
         <div className="loginPage_input">
           <TextField
             error={errorMessage}
@@ -82,14 +87,15 @@ const LoginPage = (props) => {
               variant="contained"
               color="primary"
               style={{ backgroundColor: "#004d40" }}
-              onClick={handleSubmit}
+              onClick={(e) => handleSubmit(e)}
+              type="submit"
               className="loginPage_submit"
             >
               Login
             </Button>
           )}
         </div>
-      </div>
+      </form>
       {props.loggedIn ? <Redirect to="/quizzes" /> : null}
     </div>
   );

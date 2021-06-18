@@ -6,6 +6,7 @@ import {
   postAnswersForQuestion,
 } from "../../Utils/Axios";
 import {
+  IconButton,
   Button,
   TextField,
   Checkbox,
@@ -178,19 +179,36 @@ const Answers = (props) => {
                         )}
                       </div>
                       {answers.length > 3 ? (
-                        <Button
-                          variant="outlined"
-                          style={{
-                            borderColor: "#d11a2a",
-                            color: "#d11a2a",
-                          }}
+                        <IconButton
                           onClick={() => {
                             handleDeleteAnswer(index);
                           }}
+                          color="#d11a2a"
+                          aria-label="upload picture"
+                          component="span"
                         >
-                          <DeleteForeverIcon />
-                        </Button>
-                      ) : null}
+                          <DeleteForeverIcon
+                            style={{
+                              borderColor: "#d11a2a",
+                              color: "#d11a2a",
+                            }}
+                          />
+                        </IconButton>
+                      ) : //   <Button
+                      //     variant="outlined"
+                      // style={{
+                      //   borderColor: "#d11a2a",
+                      //   color: "#d11a2a",
+                      // }}
+                      //     onClick={() => {
+                      //       handleDeleteAnswer(index);
+                      //     }}
+                      // endIcon={<VisibilityIcon />}
+
+                      //   >
+                      //     <DeleteForeverIcon />
+                      //   </Button>
+                      null}
                     </div>
                   </li>
                   <Divider />
@@ -207,9 +225,9 @@ const Answers = (props) => {
                   borderColor: "#00796b",
                   color: "#00796b",
                 }}
+                endIcon={<AddCircleOutlineIcon />}
               >
                 Add Answer
-                <AddCircleOutlineIcon style={{ margin: "0 0 0 10" }} />
               </Button>
             ) : null}
             <div className="answersBottomRow_standard">
@@ -217,17 +235,18 @@ const Answers = (props) => {
                 variant="contained"
                 style={{ backgroundColor: "#00796b", color: "#ffffff" }}
                 onClick={handleUpdate}
+                endIcon={<SaveIcon />}
               >
-                Save And Update <SaveIcon style={{ margin: "0 0 0 10" }} />
+                Save And Update
               </Button>
               <Button
                 variant="contained"
                 color="primary"
                 style={{ backgroundColor: "#d11a2a", color: "#ffffff" }}
                 onClick={() => handleToggleDeleteDialog(true)}
+                endIcon={<DeleteForeverIcon />}
               >
-                Delete Question{" "}
-                <DeleteForeverIcon style={{ margin: "0 0 0 10" }} />
+                Delete Question
               </Button>
             </div>
           </div>
