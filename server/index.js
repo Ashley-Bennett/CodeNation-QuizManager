@@ -25,7 +25,7 @@ app.use(express.urlencoded({
 
 //  Login
 app.post("/auth/login", (req, res) => {
-  const userName = req.body.userName
+  const userName = req.body.userName.toLowerCase()
   const password = req.body.password
   const sqlSelect = "select * from users"
 
@@ -92,7 +92,7 @@ app.post("/auth/permissions", (req, res) => {
 app.post("/quizzes/getAll", (req, res) => {
   const isAuthorised = req.body.isAuthorised
   if (isAuthorised) {
-    const sqlSelect = "select * from quizzes"
+    const sqlSelect = "select * from quizzes order by id"
     db.query(sqlSelect, (err, result) => {
       let success = false
 
@@ -119,7 +119,7 @@ app.post("/quizzes/getAll", (req, res) => {
 app.post("/quizzes/postNewQuiz", (req, res) => {
   const isAuthorised = req.body.isAuthorised
   if (isAuthorised) {
-    const sqlInsert = "insert into quizzes (name) values (?)"
+    const sqlInsert = "insert into quizzes (quizname) values (?)"
     db.query(sqlInsert, req.body.quizName, (err, result) => {
       let success = false
 
@@ -171,7 +171,7 @@ app.post("/quizzes/deleteQuiz", (req, res) => {
 app.post("/questions/getAll", (req, res) => {
   const isAuthorised = req.body.isAuthorised
   if (isAuthorised) {
-    const sqlSelect = "select * from question where quiz = ?"
+    const sqlSelect = "select * from questions where quizid = ? order by id"
     db.query(sqlSelect, [req.body.quizId], (err, result) => {
       let success = false
 
@@ -197,7 +197,7 @@ app.post("/questions/getAll", (req, res) => {
 app.post("/answers/getAll", (req, res) => {
   const isAuthorised = req.body.isAuthorised
   if (isAuthorised) {
-    const sqlSelect = "select * from answers where question = ?"
+    const sqlSelect = "select * from answers where questionid = ? order by id"
     db.query(sqlSelect, [req.body.questionId], (err, result) => {
       let success = false
       if (err) {
@@ -245,7 +245,7 @@ app.post("/answers/deleteAnswer", (req, res) => {
 app.post("/questions/deleteQuestion", (req, res) => {
   const isAuthorised = req.body.isAuthorised
 
-  const sqlDelete = "delete from answers where question = ?; delete from question where id = ?"
+  const sqlDelete = "delete from answers where questionid = ?; delete from questions where id = ?"
   db.query(sqlDelete, [req.body.questionId, req.body.questionId], (err, result) => {
     let success = false
     if (err) {
@@ -278,7 +278,7 @@ app.post("/answers/postAnswers", (req, res) => {
 
   if (isAuthorised) {
     if (question) {
-      const sqlPut = "update cn.question set question = ? where id = ?"
+      const sqlPut = "update questions set questionname = ? where id = ?"
       db.query(sqlPut, [question, questionId], (err, result) => {
         console.log(265, err);
         console.log(266, result);
@@ -295,16 +295,16 @@ app.post("/answers/postAnswers", (req, res) => {
 
       // update existing answers
       existingAnswers.forEach(answer => {
-        const sqlPut = "update answers set answer = ?, iscorrect = ? where id = ?"
-        db.query(sqlPut, [answer.Answer, answer.IsCorrect, answer.Id], (err, result) => {
+        const sqlPut = "update answers set answername = ?, iscorrect = ? where id = ?"
+        db.query(sqlPut, [answer.AnswerName, answer.IsCorrect, answer.Id], (err, result) => {
           console.log(284, err);
         })
       })
 
       // Add new answers
       newAnswers.forEach(answer => {
-        const sqlPost = "insert into answers (answer, iscorrect, question) values (?, ?, ?)"
-        db.query(sqlPost, [answer.Answer, answer.IsCorrect, questionId], (err, result) => {
+        const sqlPost = "insert into answers (answername, iscorrect, questionid) values (?, ?, ?)"
+        db.query(sqlPost, [answer.AnswerName, answer.IsCorrect, questionId], (err, result) => {
           console.log(303, err);
           console.log(304, result);
         })
@@ -324,7 +324,7 @@ app.post("/answers/postAnswers", (req, res) => {
 app.post("/questions/postNewQuestion", (req, res) => {
   const isAuthorised = req.body.isAuthorised
 
-  const sqlInsert = "insert into question (question, quiz) values ('New Question', ?); SELECT LAST_INSERT_ID();"
+  const sqlInsert = "insert into questions (questionname, quizid) values ('New Question', ?); SELECT LAST_INSERT_ID();"
   db.query(sqlInsert, [req.body.quizId], (err, result) => {
     let success = false
     if (err) {
@@ -332,7 +332,7 @@ app.post("/questions/postNewQuestion", (req, res) => {
     } else if (result) {
       const questionId = Object.values(result[1][0])[0]
       //  Insert default answers
-      const sqlInsertAnswers = "insert into answers (answer, iscorrect, question) values ('Answer', true, ?);insert into answers (answer, iscorrect, question) values ('Answer', false, ?);insert into answers (answer, iscorrect, question) values ('Answer', false, ?);"
+      const sqlInsertAnswers = "insert into answers (answername, iscorrect, questionid) values ('Answer', true, ?);insert into answers (answername, iscorrect, questionid) values ('Answer', false, ?);insert into answers (answername, iscorrect, questionid) values ('Answer', false, ?);"
       db.query(sqlInsertAnswers, [questionId, questionId, questionId], (err, result) => {
         if (err) {
           res.send([err, success])
@@ -359,7 +359,7 @@ app.post("/questions/postNewQuestion", (req, res) => {
 //  Create a user
 app.post("/auth/createUser", (req, res) => {
   const sqlSelect = "insert into users (username, password, permissions) values (?, ?, ?)"
-  db.query(sqlSelect, [req.body.userName, bcrypt.hashSync(req.body.password, bcrypt.genSaltSync()), req.body.permissionsId], (err, result) => {
+  db.query(sqlSelect, [req.body.userName.toLowerCase(), bcrypt.hashSync(req.body.password, bcrypt.genSaltSync()), req.body.permissionsId], (err, result) => {
     let success = false
     if (err) {
       res.send([err, success])

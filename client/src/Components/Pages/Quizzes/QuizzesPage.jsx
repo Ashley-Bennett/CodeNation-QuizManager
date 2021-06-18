@@ -91,7 +91,7 @@ const QuizzesPage = (props) => {
               }}
             >
               <div className="quizzesPage_quizCardHeader">
-                <h2>{quiz.Name}</h2>
+                <h2>{quiz.QuizName}</h2>
               </div>
               <CardActions className="quizzesPage_quizCardActions">
                 {props.authLevel > 2 && (

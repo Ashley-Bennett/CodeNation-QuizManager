@@ -81,14 +81,14 @@ const QuestionsPage = (props) => {
                     }
                   >
                     <li>
-                      <h2>{question.Question}</h2>
+                      <h2>{question.QuestionName}</h2>
                     </li>
                   </AccordionSummary>
                   <AccordionDetails>
                     <Answers
                       authLevel={props.authLevel}
                       questionId={question.Id}
-                      question={question.Question}
+                      question={question.QuestionName}
                       callGetAllQuestionsForQuiz={callGetAllQuestionsForQuiz}
                     />
                   </AccordionDetails>

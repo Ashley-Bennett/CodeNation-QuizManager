@@ -51,10 +51,10 @@ const App = () => {
     //  Switch on user roles to set permissions
     getPermissionsForPermissionId(data.Permissions).then((res) => {
       if (res.data.success) {
-        setAuthLevel(res.data.data[0].Level);
+        setAuthLevel(res.data.data[0].Id);
         setLoggedIn(true);
         sessionStorage.setItem("isLoggedIn", "true");
-        sessionStorage.setItem("authLevel", res.data.data[0].Level);
+        sessionStorage.setItem("authLevel", res.data.data[0].Id);
       }
     });
   };

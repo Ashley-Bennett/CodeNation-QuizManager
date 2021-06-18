@@ -29,6 +29,7 @@ const Answers = (props) => {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   useEffect(() => {
+    console.log(props.question);
     setQuestion(props.question);
     callGetAllAnswers();
   }, []);
@@ -48,10 +49,10 @@ const Answers = (props) => {
 
   const handleChangeAnswer = (e, answerIndex) => {
     let newArr = [...answers];
-    newArr[answerIndex].Answer = e.target.value;
+    newArr[answerIndex].AnswerName = e.target.value;
     setAnswers(
       answers.map((item) =>
-        item.id === answerIndex ? (item.Answer = e.target.value) : item
+        item.id === answerIndex ? (item.AnswerName = e.target.value) : item
       )
     );
   };
@@ -144,7 +145,7 @@ const Answers = (props) => {
                     <div className="answers_answers">
                       <TextField
                         label="Answer"
-                        value={answer.Answer}
+                        value={answer.AnswerName}
                         onChange={(e) => {
                           handleChangeAnswer(e, index);
                         }}
