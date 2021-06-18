@@ -1,20 +1,14 @@
 import express from "express";
 import mysql from "mysql"
-import password from "./DBPassword.js";
+// import password from "../DBPassword.js";
 import bodyParser from "body-parser";
 import cors from "cors"
 import bcrypt from "bcryptjs"
 import sqlCreateTables from "./initSqlTables.js";
+import dbconfig from "./dbConfig.js";
 const app = express()
 
-const db = mysql.createPool({
-  host: "localhost",
-  user: "root",
-  //  Password stored locally
-  password: password,
-  database: "cn_test",
-  multipleStatements: true
-})
+const db = mysql.createPool(dbconfig)
 
 
 app.use(cors())
@@ -42,7 +36,7 @@ app.post("/auth/login", (req, res) => {
       for (let i = 0; i < result.length; i++) {
         const account = result[i];
         if (account.UserName === userName && bcrypt.compareSync(password, account.Password)) {
-          
+
           success = true
           user = account
           break
@@ -279,8 +273,7 @@ app.post("/answers/postAnswers", (req, res) => {
   if (isAuthorised) {
     if (question) {
       const sqlPut = "update questions set questionname = ? where id = ?"
-      db.query(sqlPut, [question, questionId], (err, result) => {
-      })
+      db.query(sqlPut, [question, questionId], (err, result) => {})
     }
     if (answers) {
       //  Sort answers
@@ -294,15 +287,13 @@ app.post("/answers/postAnswers", (req, res) => {
       // update existing answers
       existingAnswers.forEach(answer => {
         const sqlPut = "update answers set answername = ?, iscorrect = ? where id = ?"
-        db.query(sqlPut, [answer.AnswerName, answer.IsCorrect, answer.Id], (err, result) => {
-        })
+        db.query(sqlPut, [answer.AnswerName, answer.IsCorrect, answer.Id], (err, result) => {})
       })
 
       // Add new answers
       newAnswers.forEach(answer => {
         const sqlPost = "insert into answers (answername, iscorrect, questionid) values (?, ?, ?)"
-        db.query(sqlPost, [answer.AnswerName, answer.IsCorrect, questionId], (err, result) => {
-        })
+        db.query(sqlPost, [answer.AnswerName, answer.IsCorrect, questionId], (err, result) => {})
       })
     }
 
@@ -375,7 +366,7 @@ app.post("/auth/createUser", (req, res) => {
 //  Create initial tables
 app.post("/init", (req, res) => {
   const sqlInsert = sqlCreateTables
-  db.query(sqlInsert,(err, result) => {
+  db.query(sqlInsert, (err, result) => {
     let success = false
     if (err) {
       res.send([err, success])
