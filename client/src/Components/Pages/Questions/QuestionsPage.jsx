@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Redirect } from "react-router-dom";
 import { getAllQuestionsForQuiz, postNewQuestion } from "../../../Utils/Axios";
-import Accordion from "@material-ui/core/Accordion";
-import AccordionSummary from "@material-ui/core/AccordionSummary";
-import AccordionDetails from "@material-ui/core/AccordionDetails";
-import { Typography, Button, CircularProgress } from "@material-ui/core";
+import {
+  Button,
+  CircularProgress,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+} from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import NotInterestedIcon from "@material-ui/icons/NotInterested";

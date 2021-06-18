@@ -5,16 +5,17 @@ import history from "./Utils/history";
 import LoginPage from "./Components/Pages/Login/LoginPage";
 import QuizzesPage from "./Components/Pages/Quizzes/QuizzesPage";
 import QuestionsPage from "./Components/Pages/Questions/QuestionsPage";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
-import AccountCircle from "@material-ui/icons/AccountCircle";
-import MenuItem from "@material-ui/core/MenuItem";
-import Menu from "@material-ui/core/Menu";
-import Breadcrumbs from "@material-ui/core/Breadcrumbs";
+import {
+  AppBar,
+  Toolbar,
+  IconButton,
+  MenuItem,
+  Menu,
+  Breadcrumbs,
+  Button,
+} from "@material-ui/core";
+import { AccountCircle } from "@material-ui/icons";
 import { getPermissionsForPermissionId } from "./Utils/Axios";
-import { Button } from "@material-ui/core";
 
 const App = () => {
   const [anchorEl, setAnchorEl] = useState(null);

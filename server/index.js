@@ -272,16 +272,10 @@ app.post("/answers/postAnswers", (req, res) => {
   const answers = req.body.answers
   const questionId = req.body.questionId
 
-  console.log(246, question);
-  console.log(247, answers);
-  console.log(248, questionId);
-
   if (isAuthorised) {
     if (question) {
       const sqlPut = "update questions set questionname = ? where id = ?"
       db.query(sqlPut, [question, questionId], (err, result) => {
-        console.log(265, err);
-        console.log(266, result);
       })
     }
     if (answers) {
@@ -297,7 +291,6 @@ app.post("/answers/postAnswers", (req, res) => {
       existingAnswers.forEach(answer => {
         const sqlPut = "update answers set answername = ?, iscorrect = ? where id = ?"
         db.query(sqlPut, [answer.AnswerName, answer.IsCorrect, answer.Id], (err, result) => {
-          console.log(284, err);
         })
       })
 
@@ -305,8 +298,6 @@ app.post("/answers/postAnswers", (req, res) => {
       newAnswers.forEach(answer => {
         const sqlPost = "insert into answers (answername, iscorrect, questionid) values (?, ?, ?)"
         db.query(sqlPost, [answer.AnswerName, answer.IsCorrect, questionId], (err, result) => {
-          console.log(303, err);
-          console.log(304, result);
         })
       })
     }

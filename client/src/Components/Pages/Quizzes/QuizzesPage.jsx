@@ -54,7 +54,6 @@ const QuizzesPage = (props) => {
         setCreatingQuiz(false);
         callGetQuizzes();
       } else {
-        console.log(res.data);
         switch (res.data[0].code) {
           case "ER_DUP_ENTRY":
             setQuizErrorMessage("A quiz by this name already exists");

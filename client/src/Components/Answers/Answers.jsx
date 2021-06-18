@@ -29,13 +29,11 @@ const Answers = (props) => {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   useEffect(() => {
-    console.log(props.question);
     setQuestion(props.question);
     callGetAllAnswers();
   }, []);
 
   const callGetAllAnswers = () => {
-    console.log(props.questionId);
     getAllAnswersForQuestion(props.questionId).then((res) => {
       if (res.data.success) {
         setAnswers(res.data.data);
@@ -58,7 +56,6 @@ const Answers = (props) => {
   };
 
   const handleChangeAnswerCorrect = (e, answerIndex) => {
-    console.log(e.target.value);
     let isCorrect = e.target.value === "1" ? 0 : 1;
     let newArr = [...answers];
     newArr[answerIndex].IsCorrect = isCorrect;
