@@ -8,6 +8,11 @@ import {
   Checkbox,
   FormControlLabel,
   Divider,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { Link, Redirect } from "react-router-dom";
@@ -22,8 +27,9 @@ const QuizzesPage = (props) => {
   const [quizzes, setQuizzes] = useState([]);
   const [creatingQuiz, setCreatingQuiz] = useState(false);
   const [newQuizName, setNewQuizName] = useState("");
-  const [quizErrorMessage, setQuizErrorMessage] = useState(false)
-
+  const [quizErrorMessage, setQuizErrorMessage] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [selectedQuiz, setSelectedQuiz] = useState(null);
 
   useEffect(() => {
     callGetQuizzes();
@@ -33,7 +39,7 @@ const QuizzesPage = (props) => {
   const handleAddCardClick = (status) => {
     setNewQuizName("");
     setCreatingQuiz(status);
-    setQuizErrorMessage(false)
+    setQuizErrorMessage(false);
   };
 
   const handleQuizNameChange = (e) => {
@@ -41,7 +47,7 @@ const QuizzesPage = (props) => {
   };
 
   const handlePostNewQuiz = () => {
-    setQuizErrorMessage(false)
+    setQuizErrorMessage(false);
     postNewQuiz(newQuizName).then((res) => {
       if (res.data.success) {
         setNewQuizName("");
@@ -51,13 +57,12 @@ const QuizzesPage = (props) => {
         console.log(res.data);
         switch (res.data[0].code) {
           case "ER_DUP_ENTRY":
-            setQuizErrorMessage("A quiz by this name already exists")
+            setQuizErrorMessage("A quiz by this name already exists");
             break;
-        
+
           default:
             break;
         }
-
       }
     });
   };
@@ -76,51 +81,56 @@ const QuizzesPage = (props) => {
     });
   };
 
+  const handleToggleDeleteDialog = (status) => {
+    setIsDeleteDialogOpen(status);
+  };
+
   return (
     <div className="quizzesPageContainer">
       <div className="quizzesPage_cardsWrapper">
         {quizzes.map((quiz) => {
           return (
-            <Card
-              className="quizzesPage_quizCard"
-              key={quiz.id}
-              style={{
-                backgroundColor: "#004d40",
-                color: "#ffffff",
-                padding: 10,
-              }}
-            >
-              <div className="quizzesPage_quizCardHeader">
-                <h2>{quiz.QuizName}</h2>
-              </div>
-              <CardActions className="quizzesPage_quizCardActions">
-                {props.authLevel > 2 && (
-                  <Button
-                    style={{ backgroundColor: "#d11a2a", color: "#ffffff" }}
-                    variant="contained"
-                    onClick={() => {
-                      handleDeleteQuiz(quiz.Id);
+              <Card
+                className="quizzesPage_quizCard"
+                key={quiz.id}
+                style={{
+                  backgroundColor: "#004d40",
+                  color: "#ffffff",
+                  padding: 10,
+                }}
+              >
+                <div className="quizzesPage_quizCardHeader">
+                  <h2>{quiz.QuizName}</h2>
+                </div>
+                <CardActions className="quizzesPage_quizCardActions">
+                  {props.authLevel > 2 && (
+                    <Button
+                      style={{ backgroundColor: "#d11a2a", color: "#ffffff" }}
+                      variant="contained"
+                      onClick={() => {
+                        handleToggleDeleteDialog(true);
+                        setSelectedQuiz(quiz.Id);
+                      }}
+                    >
+                      Delete Quiz <DeleteForeverIcon />
+                    </Button>
+                  )}
+                  <Link
+                    to={{
+                      pathname: "/questions",
+                      search: `?quizId=${quiz.Id}`,
+                      state: { quizId: "true" },
                     }}
                   >
-                    Delete Quiz <DeleteForeverIcon />
-                  </Button>
-                )}
-                <Link
-                  to={{
-                    pathname: "/questions",
-                    search: `?quizId=${quiz.Id}`,
-                    state: { quizId: "true" },
-                  }}
-                >
-                  <Button
-                    variant="contained"
-                    style={{ backgroundColor: "#00796b", color: "#ffffff" }}
-                  >
-                    View Quiz <VisibilityIcon />
-                  </Button>
-                </Link>
-              </CardActions>
-            </Card>
+                    <Button
+                      variant="contained"
+                      style={{ backgroundColor: "#00796b", color: "#ffffff" }}
+                    >
+                      View Quiz <VisibilityIcon />
+                    </Button>
+                  </Link>
+                </CardActions>
+              </Card>
           );
         })}
         {creatingQuiz ? (
@@ -133,10 +143,13 @@ const QuizzesPage = (props) => {
                   handleQuizNameChange(e);
                 }}
                 error={quizErrorMessage}
-            helperText={quizErrorMessage && quizErrorMessage}
+                helperText={quizErrorMessage && quizErrorMessage}
               />
             </CardContent>
-            <CardActions className="quizzesPage_newQuizCardActions" style={{padding: "0 17px"}}>
+            <CardActions
+              className="quizzesPage_newQuizCardActions"
+              style={{ padding: "0 17px" }}
+            >
               <Button
                 // style={{ backgroundColor: "#ffb74d", color: "#ffffff" }}
                 variant="outlined"
@@ -178,6 +191,59 @@ const QuizzesPage = (props) => {
         )}
       </div>
       {!props.loggedIn && <Redirect to="/" />}
+      <Dialog
+        open={isDeleteDialogOpen}
+        onClose={() => {
+          handleToggleDeleteDialog(false);
+          setSelectedQuiz(null);
+        }}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle
+          id="alert-dialog-title"
+          style={{ backgroundColor: "#004d40", color: "#ffffff" }}
+        >
+          {"Delete this quiz for good?"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText
+            id="alert-dialog-description"
+            style={{ color: "#000000" }}
+          >
+            Deleting this quiz will also delete any questions and answers associated to
+            this quiz. Are you sure you wan to delete this quiz?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => {
+              handleToggleDeleteDialog(false);
+              setSelectedQuiz(null);
+            }}
+            color="primary"
+            variant="outlined"
+            style={{
+              borderColor: "#00796b",
+              color: "#00796b",
+            }}
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={() => {
+              handleToggleDeleteDialog(false);
+              handleDeleteQuiz(selectedQuiz);
+              setSelectedQuiz(null);
+            }}
+            variant="contained"
+            style={{ backgroundColor: "#d11a2a", color: "#ffffff" }}
+            autoFocus
+          >
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

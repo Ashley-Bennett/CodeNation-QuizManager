@@ -118,11 +118,8 @@ const Answers = (props) => {
     });
   };
 
-  const handleCloseDeleteDialog = () => {
-    setIsDeleteDialogOpen(false);
-  };
-  const handleOpenDeleteDialog = () => {
-    setIsDeleteDialogOpen(true);
+  const handleToggleDeleteDialog = (status) => {
+    setIsDeleteDialogOpen(status);
   };
 
   return (
@@ -230,7 +227,7 @@ const Answers = (props) => {
                 variant="contained"
                 color="primary"
                 style={{ backgroundColor: "#d11a2a", color: "#ffffff" }}
-                onClick={handleOpenDeleteDialog}
+                onClick={() => handleToggleDeleteDialog(true)}
               >
                 Delete Question{" "}
                 <DeleteForeverIcon style={{ margin: "0 0 0 10" }} />
@@ -253,7 +250,7 @@ const Answers = (props) => {
       )}
       <Dialog
         open={isDeleteDialogOpen}
-        onClose={handleCloseDeleteDialog}
+        onClose={() => handleToggleDeleteDialog(false)}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
@@ -274,7 +271,7 @@ const Answers = (props) => {
         </DialogContent>
         <DialogActions>
           <Button
-            onClick={handleCloseDeleteDialog}
+            onClick={() => handleToggleDeleteDialog(false)}
             color="primary"
             variant="outlined"
             style={{
@@ -286,7 +283,7 @@ const Answers = (props) => {
           </Button>
           <Button
             onClick={() => {
-              handleCloseDeleteDialog();
+              handleToggleDeleteDialog(false);
               handleDeleteQuestion();
             }}
             variant="contained"

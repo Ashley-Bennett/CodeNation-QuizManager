@@ -81,14 +81,17 @@ const App = () => {
               <div style={{ width: 70 }} />
             )}
             {path === "Questions" ? (
-              <Breadcrumbs aria-label="breadcrumb" style={{color: "#ffffff"}}>
-                <Link style={{color: "#ffffff", textDecoration:"underlined"}} to="/quizzes/">
-                  Quizzes
+              <Breadcrumbs aria-label="breadcrumb" style={{ color: "#ffffff" }}>
+                <Link
+                  style={{ color: "#ffffff", textDecoration: "underlined" }}
+                  to="/quizzes/"
+                >
+                  <h1 style={{ margin: 0 }}>Quizzes</h1>
                 </Link>
-                <Typography color="#ffffff">Questions</Typography>
+                <h1 style={{ margin: 0 }}>Questions</h1>
               </Breadcrumbs>
             ) : (
-              <Typography color="#ffffff">Quizzes</Typography>
+              <h1 style={{ margin: 0 }}>Quizzes</h1>
             )}
             <div>
               <IconButton
