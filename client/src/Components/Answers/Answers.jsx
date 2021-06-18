@@ -32,6 +32,7 @@ const Answers = (props) => {
   useEffect(() => {
     setQuestion(props.question);
     callGetAllAnswers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const callGetAllAnswers = () => {

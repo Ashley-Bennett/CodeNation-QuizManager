@@ -1,19 +1,15 @@
 import {
-  Card,
-  CardContent,
-  CardActions,
-  Typography,
   Button,
-  TextField,
-  Checkbox,
-  FormControlLabel,
-  Divider,
+  Card,
+  CardActions,
+  CardContent,
+  CircularProgress,
   Dialog,
-  DialogTitle,
+  DialogActions,
   DialogContent,
   DialogContentText,
-  DialogActions,
-  CircularProgress
+  DialogTitle,
+  TextField,
 } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { Link, Redirect } from "react-router-dom";
@@ -36,6 +32,7 @@ const QuizzesPage = (props) => {
   useEffect(() => {
     callGetQuizzes();
     props.handleSetPath("Quizzes");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleAddCardClick = (status) => {

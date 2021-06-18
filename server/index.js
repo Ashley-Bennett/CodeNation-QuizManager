@@ -142,6 +142,7 @@ app.post("/quizzes/postNewQuiz", (req, res) => {
   }
 })
 
+//  Delete Quiz
 app.post("/quizzes/deleteQuiz", (req, res) => {
   const isAuthorised = req.body.isAuthorised
   if (isAuthorised) {
@@ -168,6 +169,7 @@ app.post("/quizzes/deleteQuiz", (req, res) => {
   }
 })
 
+//  Get all questions
 app.post("/questions/getAll", (req, res) => {
   const isAuthorised = req.body.isAuthorised
   if (isAuthorised) {
@@ -194,6 +196,7 @@ app.post("/questions/getAll", (req, res) => {
   }
 })
 
+//  Get All Answers
 app.post("/answers/getAll", (req, res) => {
   const isAuthorised = req.body.isAuthorised
   if (isAuthorised) {
@@ -219,6 +222,7 @@ app.post("/answers/getAll", (req, res) => {
   }
 })
 
+//  Delete Answers
 app.post("/answers/deleteAnswer", (req, res) => {
   const isAuthorised = req.body.isAuthorised
 

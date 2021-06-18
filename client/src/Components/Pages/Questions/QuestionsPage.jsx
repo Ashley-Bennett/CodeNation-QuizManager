@@ -9,7 +9,6 @@ import {
   AccordionDetails,
 } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import NotInterestedIcon from "@material-ui/icons/NotInterested";
 
 import Answers from "../../Answers/Answers";
@@ -26,6 +25,7 @@ const QuestionsPage = (props) => {
     setQuizId(urlParams.get("quizId"));
     callGetAllQuestionsForQuiz(urlParams.get("quizId"));
     props.handleSetPath("Questions");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const callGetAllQuestionsForQuiz = (initQuizId) => {

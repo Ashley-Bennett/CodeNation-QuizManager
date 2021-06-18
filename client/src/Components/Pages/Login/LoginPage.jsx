@@ -1,14 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { postLogin } from "../../../Utils/Axios";
 import { Redirect } from "react-router-dom";
 import { withRouter } from "react-router";
 import companyLogo from "../../../Assets/Images/Logo.png";
-
 import {
   Button,
   TextField,
-  Checkbox,
-  FormControlLabel,
   CircularProgress,
   Divider,
 } from "@material-ui/core";
@@ -22,7 +19,7 @@ const LoginPage = (props) => {
   const [loggingIn, setIsLoggingIn] = useState(false);
 
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     setErrorMessage(false);
     setIsLoggingIn(true);
     postLogin(userName, password).then((res) => {
@@ -48,7 +45,11 @@ const LoginPage = (props) => {
         />
         <h1>Quiz Manager</h1>
       </div>
-      <form autoComplete="on" className="loginPage_form" onSubmit={(e) => handleSubmit(e)}>
+      <form
+        autoComplete="on"
+        className="loginPage_form"
+        onSubmit={(e) => handleSubmit(e)}
+      >
         <div className="loginPage_input">
           <TextField
             error={errorMessage}
