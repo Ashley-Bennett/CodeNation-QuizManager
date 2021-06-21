@@ -238,7 +238,7 @@ const Answers = (props) => {
           {answers.map((answer) => {
             return (
               <>
-                <li className="answers_viewModeAnswers">{answer.Answer}</li>
+                <li className="answers_viewModeAnswers">{answer.AnswerName}</li>
                 <Divider variant="middle" />
               </>
             );
